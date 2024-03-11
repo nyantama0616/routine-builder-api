@@ -37,6 +37,19 @@ RSpec.describe "Sleeps", type: :request do
       post '/sleeps/start'
       expect(response).to have_http_status(400)
     end
+
+    it "defaultではnap?がfalseである" do
+      sleep = JSON.parse(response.body)["sleep"]
+      expect(sleep["isNap"]).to eq(false)
+    end
+
+    it "nap: trueで実行すると、nap?がtrueになる" do
+      post "/sleeps/finish"
+      post '/sleeps/start', params: { isNap: true }
+      
+      sleep = JSON.parse(response.body)["sleep"]
+      expect(sleep["isNap"]).to eq(true)
+    end
   end
 
   describe "POST /sleeps/finish" do

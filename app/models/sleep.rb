@@ -7,10 +7,10 @@ class Sleep < ApplicationRecord
     }
   end
 
-  def start
+  def start(nap: false)
     raise 'already finished' if has_finished?
     raise 'already started' if has_started?
-    update(started_at: Time.current)
+    update(started_at: Time.current, nap: nap)
   end
 
   def has_started?

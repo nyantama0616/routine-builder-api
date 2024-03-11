@@ -25,10 +25,16 @@ RSpec.describe Sleep, type: :model do
     })
   end
 
-  it "sleep#startで、started_atが現在時刻(Tokyo)になる" do
+  it "sleep#startで、started_atが現在時刻(Tokyo)になり、nap?がfalseになる" do
     @sleep.start
     expect(@sleep.started_at).to be_within(1.second).of(Time.current)
     expect(@sleep.started_at.zone).to eq 'JST'
+    expect(@sleep.nap?).to eq false
+  end
+
+  it "sleep#start(nap: true)で、nap?がtrueになる" do
+    @sleep.start(nap: true)
+    expect(@sleep.nap?).to eq true
   end
 
   it "sleep#startを2回実行すると、エラーになる" do

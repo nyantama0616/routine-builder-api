@@ -5,10 +5,16 @@ class SleepsController < ApplicationController
   end
 
   def start
-    sleep = Sleep.last || Sleep.create
+    sleep = Sleep.last
+
+    if sleep == nil || sleep.has_finished?
+      sleep = Sleep.create
+    end
+
+    nap = params[:isNap] == 'true'
     
     begin
-      sleep.start
+      sleep.start nap: nap
     rescue => e
       render json: { errors: [e.message] }, status: :bad_request
       return
