@@ -10,8 +10,8 @@ class SleepsController < ApplicationController
     if sleep == nil || sleep.has_finished?
       sleep = Sleep.create
     end
-
-    nap = params[:isNap] == 'true'
+    
+    nap = params[:isNap].to_s == "true"
     
     begin
       sleep.start nap: nap
