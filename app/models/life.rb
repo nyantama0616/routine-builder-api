@@ -25,4 +25,17 @@ class Life < ApplicationRecord
   def has_finished?
     finished_at.present?
   end
+
+  def drink(xml)
+    check_valid!
+    self.water += xml.to_i
+    save!
+  end
+
+  private
+
+  def check_valid!
+    raise 'already finished' if has_finished?
+    raise 'not started' unless has_started?
+  end
 end

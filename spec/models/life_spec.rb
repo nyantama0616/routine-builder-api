@@ -73,4 +73,16 @@ RSpec.describe Life, type: :model do
       expect { @life.finish }.to raise_error('already finished')
     end
   end
+
+  describe "other method" do
+    before do
+      @life = Life.create
+      @life.start
+    end
+
+    it "#drink" do
+      @life.drink(200)
+      expect(@life.water).to eq 200
+    end
+  end
 end
