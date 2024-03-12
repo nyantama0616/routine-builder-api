@@ -1,4 +1,6 @@
 class Sleep < ApplicationRecord
+  belongs_to :life
+  
   def info
     {
       startedAt: started_at,
@@ -21,6 +23,14 @@ class Sleep < ApplicationRecord
     raise 'not started' unless has_started?
     raise 'already finished' if has_finished?
     update(finished_at: Time.current)
+
+    # 睡眠が終わったら、Lifeが終了し、新しいLifeが始まる
+    # TODO: この設計は正しいのか。。。
+    unless nap?
+      life.finish
+      life = Life.create
+      life.start
+    end
   end
 
   def has_finished?
