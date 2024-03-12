@@ -23,8 +23,7 @@ RSpec.describe Life, type: :model do
 
   describe "#start" do
     before do
-      @life = Life.create
-      @life.start
+      @life = Life.create_and_start
     end
 
     it "started_at is current time" do
@@ -51,8 +50,7 @@ RSpec.describe Life, type: :model do
 
   describe "#finish" do
     before do
-      @life = Life.create
-      @life.start
+      @life = Life.create_and_start
       @life.finish
     end
 
@@ -76,8 +74,7 @@ RSpec.describe Life, type: :model do
 
   describe "other method" do
     before do
-      @life = Life.create
-      @life.start
+      @life = Life.create_and_start
     end
 
     it "#drink" do

@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe "Sleeps", type: :request do
   describe "GET /sleeps/latest" do
     before do
-      sleeps = create_list(:sleep, 3)
+      life = create(:life)
+      sleeps = create_list(:sleep, 3, life: life)
       @latest_sleep = sleeps.last
       get '/sleeps/latest'
     end
@@ -20,6 +21,7 @@ RSpec.describe "Sleeps", type: :request do
 
   describe "POST /sleeps/start" do
     before do
+      Life.create_and_start
       post '/sleeps/start'
       @sleep = Sleep.last
     end
@@ -54,6 +56,7 @@ RSpec.describe "Sleeps", type: :request do
 
   describe "POST /sleeps/finish" do
     before do
+      Life.create_and_start
       post '/sleeps/start'
       post '/sleeps/finish'
       @sleep = Sleep.last

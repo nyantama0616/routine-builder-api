@@ -1,9 +1,5 @@
 FactoryBot.define do
   factory :sleep do
-    life
-
-    after(:create) do |sleep|
-      sleep.life.start
-    end
+    life { Life.create_and_start }
   end
 end

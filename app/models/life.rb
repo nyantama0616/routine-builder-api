@@ -2,6 +2,12 @@
 class Life < ApplicationRecord
   class << self
     alias :today :last
+    
+    def create_and_start
+      life = create
+      life.start
+      life
+    end
   end
 
   has_many :sleeps, dependent: :destroy

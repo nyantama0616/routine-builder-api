@@ -8,7 +8,7 @@ class SleepsController < ApplicationController
     sleep = Sleep.last
 
     if sleep == nil || sleep.has_finished?
-      sleep = Sleep.create
+      sleep = Sleep.create! life: Life.today
     end
     
     nap = params[:isNap].to_s == "true"
