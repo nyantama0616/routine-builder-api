@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_12_174655) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_170152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "hiits", force: :cascade do |t|
+    t.bigint "life_id", null: false
+    t.integer "work_time", null: false
+    t.integer "break_time", null: false
+    t.integer "round_count", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["life_id"], name: "index_hiits_on_life_id"
+  end
 
   create_table "lives", force: :cascade do |t|
     t.datetime "started_at"
@@ -32,5 +42,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_12_174655) do
     t.index ["life_id"], name: "index_sleeps_on_life_id"
   end
 
+  add_foreign_key "hiits", "lives"
   add_foreign_key "sleeps", "lives"
 end
