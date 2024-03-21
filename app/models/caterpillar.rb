@@ -23,6 +23,10 @@ class Caterpillar < ApplicationRecord
     update(finished_at: Time.current)
   end
 
+  def has_finished?
+    finished_at.present?
+  end
+
   private
 
   def validate_pattern

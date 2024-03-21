@@ -42,6 +42,7 @@ RSpec.describe Caterpillar, type: :model do
       Life.create_and_start
       @caterpillar = Caterpillar.create_and_start!("1234")
     end
+
     it "create_and_start" do
       expect(@caterpillar.life).to eq Life.today
       expect(@caterpillar.pattern).to eq "1234"
@@ -55,6 +56,12 @@ RSpec.describe Caterpillar, type: :model do
     it "finish" do
       @caterpillar.finish
       expect(@caterpillar.finished_at).to be_within(1.second).of(Time.current)
+    end
+
+    it "has_finished?" do
+      expect(@caterpillar.has_finished?).to eq false
+      @caterpillar.finish
+      expect(@caterpillar.has_finished?).to eq true
     end
   end
 end

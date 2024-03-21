@@ -7,4 +7,8 @@ Rails.application.routes.draw do
   post "/sleeps/finish", to: "sleeps#finish"
 
   resources :hiits, only: %i[create]
+
+  #いもむしトレーニング
+  post "/caterpillars/start", to: "caterpillars#start"
+  post "/caterpillars/finish", to: "caterpillars#finish"
 end
