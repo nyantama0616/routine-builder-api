@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   get "/sleeps/latest", to: "sleeps#latest"
   post "/sleeps/start", to: "sleeps#start"
   post "/sleeps/finish", to: "sleeps#finish"
+
+  resources :hiits, only: %i[create]
 end

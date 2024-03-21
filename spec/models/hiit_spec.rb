@@ -46,4 +46,17 @@ RSpec.describe Hiit, type: :model do
       expect(@train.life).to eq Life.today
     end
   end
+
+  describe "other methods" do
+    before do
+      create(:life)
+      Hiit.work_time = 30
+      Hiit.break_time = 10
+      @train = Hiit.create_train!(5)
+    end
+
+    it "info()で{workTime, breakTime, roundCount}が取得できる" do
+      expect(@train.info).to eq({ workTime: 30, breakTime: 10, roundCount: 5 })
+    end
+  end
 end

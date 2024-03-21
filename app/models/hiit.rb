@@ -38,4 +38,12 @@ class Hiit < ApplicationRecord
 
   define_accessor :work_time, :break_time, :round_count
   create_file_if_not_exist!
+
+  def info
+    {
+      workTime: work_time,
+      breakTime: break_time,
+      roundCount: round_count
+    }
+  end
 end
