@@ -1,13 +1,5 @@
 class Caterpillar < ApplicationRecord
-  class << self
-    def create_and_start!(pattern)
-      life = Life.today
-      caterpillar = create!(life: life, pattern: pattern)
-      timer = Timer.create!(target: caterpillar)
-      timer.start
-      caterpillar
-    end
-  end
+  include ClassMethods
   
   belongs_to :life
   has_one :timer, as: :target, dependent: :destroy
@@ -17,7 +9,7 @@ class Caterpillar < ApplicationRecord
   def info
     {
       pattern: pattern,
-      passedSeconds: timer&.passed_seconds,
+      passedSeconds: timer&.passed_seconds.to_i,
     }
   end
 

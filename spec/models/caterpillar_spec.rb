@@ -43,12 +43,6 @@ RSpec.describe Caterpillar, type: :model do
       @caterpillar = Caterpillar.create_and_start!("1234")
     end
 
-    it "create_and_start" do
-      expect(@caterpillar.life).to eq Life.today
-      expect(@caterpillar.pattern).to eq "1234"
-      expect(@caterpillar.timer.started?).to eq true
-    end
-
     it "info returns {pattern, passedSeconds}" do
       expect(@caterpillar.info.keys).to eq %i[pattern passedSeconds]
     end
@@ -78,6 +72,48 @@ RSpec.describe Caterpillar, type: :model do
       expect(Timer.count).to eq 1
       @caterpillar.destroy
       expect(Timer.count).to eq 0
+    end
+  end
+
+  describe "class methods" do
+    before do
+      Life.create_and_start
+    end
+
+    it "create_and_start" do
+      caterpillar = Caterpillar.create_and_start!("1234")
+      expect(caterpillar.life).to eq Life.today
+      expect(caterpillar.pattern).to eq "1234"
+      expect(caterpillar.timer.started?).to eq true
+    end
+
+    it "all_patterns" do
+      cat1234 = Caterpillar.create_and_start!("1234")
+      Timecop.freeze(5.minute.from_now)
+      cat1234.finish
+
+      cat4321 = Caterpillar.create_and_start!("4321")
+      Timecop.freeze(10.minute.from_now)
+      cat4321.finish
+
+      cat1234 = Caterpillar.create_and_start!("1234")
+      Timecop.freeze(30.second.from_now)
+
+      patterns = Caterpillar.all_patterns
+
+      expect(patterns["1234"]).to eq 5*60 + 30
+      expect(patterns["4321"]).to eq 10*60
+      expect(patterns["1243"]).to eq 0
+    end
+
+    it "in_progress" do
+      expect(Caterpillar.in_progress).to eq nil
+
+      cat = Caterpillar.create_and_start!("1234")
+      expect(Caterpillar.in_progress).to eq cat
+
+      cat.finish
+      expect(Caterpillar.in_progress).to eq nil
     end
   end
 end
