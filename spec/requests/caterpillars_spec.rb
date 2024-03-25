@@ -17,6 +17,12 @@ RSpec.describe "Caterpillars", type: :request do
       expect(json["caterpillar"].keys).to eq caterpillar.info.keys.map(&:to_s)
     end
 
+    it "returns timer info" do
+      json = JSON.parse(response.body)
+      caterpillar = Caterpillar.last
+      expect(json["timer"].keys).to eq caterpillar.timer.info.keys.map(&:to_s)
+    end
+
     it "Occur error if last caterpillar has not finished" do
       post "/caterpillars/start", params: { pattern: "1234" }
       json = JSON.parse(response.body)
@@ -40,6 +46,12 @@ RSpec.describe "Caterpillars", type: :request do
       json = JSON.parse(response.body)
       caterpillar = Caterpillar.last
       expect(json["caterpillar"].keys).to eq caterpillar.info.keys.map(&:to_s)
+    end
+
+    it "returns timer info" do
+      json = JSON.parse(response.body)
+      caterpillar = Caterpillar.last
+      expect(json["timer"].keys).to eq caterpillar.timer.info.keys.map(&:to_s)
     end
 
     it "caterpillar has finished" do

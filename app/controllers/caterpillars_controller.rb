@@ -8,7 +8,7 @@ class CaterpillarsController < ApplicationController
 
     begin
       caterpillar = Caterpillar.create_and_start!(params[:pattern])
-      render json: { caterpillar: caterpillar.info }
+      render json: { caterpillar: caterpillar.info, timer: caterpillar.timer.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
@@ -24,7 +24,7 @@ class CaterpillarsController < ApplicationController
 
     begin
       caterpillar.finish
-      render json: { caterpillar: caterpillar.info }
+      render json: { caterpillar: caterpillar.info, timer: caterpillar.timer.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
