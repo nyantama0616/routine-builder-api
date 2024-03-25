@@ -10,5 +10,6 @@ Rails.application.routes.draw do
 
   #いもむしトレーニング
   post "/caterpillars/start", to: "caterpillars#start"
+  post "/caterpillars/stop", to: "caterpillars#stop"
   post "/caterpillars/finish", to: "caterpillars#finish"
 end

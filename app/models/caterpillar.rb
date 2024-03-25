@@ -21,11 +21,19 @@ class Caterpillar < ApplicationRecord
     }
   end
 
+  def start
+    timer.start  
+  end
+
+  def stop
+    timer.stop
+  end
+
   def finish
-    raise 'already finished' if finished?
     timer.finish
   end
 
+  #TODO: いる？
   def finished?
     timer.finished?
   end
