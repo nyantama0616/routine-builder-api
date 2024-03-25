@@ -1,4 +1,16 @@
 class CaterpillarsController < ApplicationController
+  def index
+    caterpillar = Caterpillar.in_progress
+    inProgress = caterpillar ? { caterpillar: caterpillar.info, timer: caterpillar.timer.info } : nil
+
+    json = {
+      patterns: Caterpillar.all_patterns,
+      inProgress: inProgress,
+    }
+
+    render json: json
+  end
+
   def start
     last = Caterpillar.last
     if last && !last.timer.finished?

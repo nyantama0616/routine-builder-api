@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :hiits, only: %i[create]
 
   #いもむしトレーニング
+  get "/caterpillars", to: "caterpillars#index"
   post "/caterpillars/start", to: "caterpillars#start"
   post "/caterpillars/stop", to: "caterpillars#stop"
   post "/caterpillars/finish", to: "caterpillars#finish"

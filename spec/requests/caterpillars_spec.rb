@@ -1,6 +1,34 @@
 require 'rails_helper'
 
 RSpec.describe "Caterpillars", type: :request do
+  describe "GET /caterpillars" do
+    before do
+      Life.create_and_start
+      @caterpillar = Caterpillar.create_and_start!("1234")
+      get "/caterpillars"
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns caterpillar in progress" do
+      in_progress = JSON.parse(response.body)["inProgress"]
+      expect(in_progress["caterpillar"]["pattern"]).to eq @caterpillar.pattern
+      expect(in_progress["timer"]["isRunning"]).to be true
+
+      @caterpillar.finish
+      get "/caterpillars"
+      in_progress = JSON.parse(response.body)["inProgress"]
+      expect(in_progress).to be_nil
+    end
+
+    it "returns all patterns" do
+      patterns = JSON.parse(response.body)["patterns"]
+      expect(patterns).to eq Caterpillar.all_patterns
+    end
+  end
+
   describe "POST /caterpillars/start" do
     before do
       Life.create_and_start
