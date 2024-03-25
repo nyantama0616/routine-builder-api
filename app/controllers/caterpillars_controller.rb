@@ -1,7 +1,7 @@
 class CaterpillarsController < ApplicationController
   def start
     last = Caterpillar.last
-    if last
+    if last && !last.timer.finished?
       begin
         last.start
         render json: { caterpillar: last.info, timer: last.timer.info }

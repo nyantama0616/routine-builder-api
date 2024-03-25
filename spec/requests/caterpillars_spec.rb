@@ -38,6 +38,14 @@ RSpec.describe "Caterpillars", type: :request do
       expect(json["caterpillar"]["pattern"]).to eq "1234"
       expect(json["timer"]["isRunning"]).to be_truthy
     end
+
+    it "new caterpillar is created if last caterpillar has finished" do
+      post "/caterpillars/finish"
+      post "/caterpillars/start", params: { pattern: "1234" }
+      json = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(Caterpillar.count).to eq 2
+    end
   end
 
   describe "POST /caterpillars/stop" do
