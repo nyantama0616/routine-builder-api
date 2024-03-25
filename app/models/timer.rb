@@ -42,7 +42,7 @@ class Timer < ApplicationRecord
   def info
     {
       isRunning: running?,
-      startedAt: started_at,
+      startedAt: started_at.iso8601,
       passedSecondsWhenStopped: passed_seconds_when_stopped,
     }
   end

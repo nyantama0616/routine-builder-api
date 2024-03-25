@@ -115,4 +115,22 @@ RSpec.describe Timer, type: :model do
       expect { @timer.finish }.to raise_error("Timer has already finished.")
     end
   end
+
+  describe 'info' do
+    before do
+      @timer = create(:timer)
+      @timer.start
+      Timecop.freeze(Time.current + 10) do
+        @timer.stop
+      end
+    end
+
+    it "returns info" do
+      expect(@timer.info).to eq({
+        isRunning: false,
+        startedAt: @timer.started_at.iso8601,
+        passedSecondsWhenStopped: 10,
+      })
+    end
+  end
 end
