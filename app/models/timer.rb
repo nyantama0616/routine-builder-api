@@ -1,4 +1,6 @@
 class Timer < ApplicationRecord
+  belongs_to :target, polymorphic: true, optional: true
+  
   def passed_seconds
     if  running?
       (Time.current - started_at).to_i

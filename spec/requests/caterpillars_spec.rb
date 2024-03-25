@@ -44,7 +44,7 @@ RSpec.describe "Caterpillars", type: :request do
 
     it "caterpillar has finished" do
       caterpillar = Caterpillar.last
-      expect(caterpillar.has_finished?).to be_truthy
+      expect(caterpillar.finished?).to be_truthy
     end
 
     it "Occur error if caterpillar has not started" do

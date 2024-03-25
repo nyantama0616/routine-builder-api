@@ -2,29 +2,32 @@ class Caterpillar < ApplicationRecord
   class << self
     def create_and_start!(pattern)
       life = Life.today
-      create!(life: life, pattern: pattern, started_at: Time.current)
+      caterpillar = create!(life: life, pattern: pattern)
+      timer = Timer.create!(target: caterpillar)
+      timer.start
+      caterpillar
     end
   end
   
   belongs_to :life
+  has_one :timer, as: :target, dependent: :destroy
   validates :life, presence: true
   validate :validate_pattern
 
   def info
     {
       pattern: pattern,
-      startedAt: started_at,
-      finishedAt: finished_at
+      passedSeconds: timer&.passed_seconds,
     }
   end
 
   def finish
-    raise 'already finished' if finished_at.present?
-    update(finished_at: Time.current)
+    raise 'already finished' if finished?
+    timer.finish
   end
 
-  def has_finished?
-    finished_at.present?
+  def finished?
+    timer.finished?
   end
 
   private

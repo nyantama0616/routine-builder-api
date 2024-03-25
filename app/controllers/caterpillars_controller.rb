@@ -1,7 +1,7 @@
 class CaterpillarsController < ApplicationController
   def start
     last = Caterpillar.last
-    if last && !last.has_finished?
+    if last && !last.finished?
       render json: { errors: ["Last Caterpillar has not finished."] }, status: :bad_request
       return
     end
