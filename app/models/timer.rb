@@ -3,7 +3,7 @@ class Timer < ApplicationRecord
   
   def passed_seconds
     if  running?
-      (Time.current - started_at).to_i
+      (Time.current - started_at).to_i + passed_seconds_when_stopped
     else
       passed_seconds_when_stopped
     end
