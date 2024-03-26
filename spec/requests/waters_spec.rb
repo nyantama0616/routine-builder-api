@@ -18,10 +18,10 @@ RSpec.describe "Waters", type: :request do
     end
   end
 
-  describe "POST /waters/drink_water" do
+  describe "POST /waters/drink" do
     before do
       Life.create_and_start
-      post "/waters/drink_water", params: { xml: 200 }
+      post "/waters/drink", params: { xml: 200 }
     end
     
     it "returns 200" do

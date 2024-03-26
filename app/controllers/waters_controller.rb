@@ -4,7 +4,7 @@ class WatersController < ApplicationController
     render json: { amount: life.water_info }
   end
 
-  def drink_water
+  def drink
     life = Life.today
     xml = params[:xml].to_i
     life.drink_water(xml)

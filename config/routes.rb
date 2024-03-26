@@ -16,5 +16,5 @@ Rails.application.routes.draw do
 
   #水
   get "/waters", to: "waters#index"
-  post "/waters/drink_water", to: "waters#drink_water"
+  post "/waters/drink", to: "waters#drink"
 end
