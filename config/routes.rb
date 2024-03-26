@@ -15,5 +15,6 @@ Rails.application.routes.draw do
   post "/caterpillars/finish", to: "caterpillars#finish"
 
   #水
+  get "/waters", to: "waters#index"
   post "/waters/drink_water", to: "waters#drink_water"
 end
