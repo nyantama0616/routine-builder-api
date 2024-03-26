@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   post "/caterpillars/start", to: "caterpillars#start"
   post "/caterpillars/stop", to: "caterpillars#stop"
   post "/caterpillars/finish", to: "caterpillars#finish"
+
+  #水
+  post "/waters/drink_water", to: "waters#drink_water"
 end

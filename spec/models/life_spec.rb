@@ -78,7 +78,7 @@ RSpec.describe Life, type: :model do
     end
 
     it "#drink" do
-      @life.drink(200)
+      @life.drink_water(200)
       expect(@life.water).to eq 200
     end
   end

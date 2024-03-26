@@ -32,10 +32,17 @@ class Life < ApplicationRecord
     finished_at.present?
   end
 
-  def drink(xml)
+  def drink_water(xml)
     check_valid!
     self.water += xml.to_i
     save!
+  end
+
+  #TODO: coffeeとかも追加
+  def water_info
+    {
+      water: water,
+    }
   end
 
   private
