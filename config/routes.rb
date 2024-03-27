@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post "/waters/drink", to: "waters#drink"
 
   #Hiit
+  get "/hiits", to: "hiits#index"
   post "/hiits", to: "hiits#create"
   patch "/hiits/setting", to: "hiits#setting"
 end

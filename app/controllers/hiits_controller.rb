@@ -1,4 +1,8 @@
 class HiitsController < ApplicationController
+  def index
+    render json: { hiitSetting: Hiit.setting_info }
+  end
+  
   def create  
     begin
       hiit = Hiit.create_train!(hiit_params)

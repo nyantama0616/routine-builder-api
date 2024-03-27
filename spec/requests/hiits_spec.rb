@@ -1,6 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe "Hiits", type: :request do
+  describe "GET /hiits" do
+    before do
+      Life.create_and_start
+      Hiit.create_train!({ round_count: 1, work_time: 2, break_time: 3})
+      Hiit.update_setting!({ work_time: 10, break_time: 20, round_count: 30 })
+      get "/hiits"
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns hiit setting" do
+      json = JSON.parse(response.body)
+      expect(json["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
+    end
+  end
+
   describe "POST /hiits" do
     before do
       Life.create_and_start
