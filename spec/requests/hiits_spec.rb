@@ -58,7 +58,7 @@ RSpec.describe "Hiits", type: :request do
       Hiit.break_time = 2
       Hiit.round_count = 3
 
-      patch "/hiits/setting", params: { hiit: { workTime: 10, breakTime: 20, roundCount: 30 } }
+      patch "/hiits/setting", params: { hiitSetting: { workTime: 10, breakTime: 20, roundCount: 30 } }
     end
 
     it "returns 200" do

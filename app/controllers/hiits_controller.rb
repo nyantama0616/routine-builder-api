@@ -34,5 +34,12 @@ class HiitsController < ApplicationController
     hash.compact
   end
 
-  alias :setting_params :hiit_params
+  def setting_params
+    hash = params.require(:hiitSetting).permit(:roundCount, :workTime, :breakTime)
+    hash[:round_count] = hash.delete(:roundCount).to_i
+    hash[:work_time] = hash.delete(:workTime).to_i
+    hash[:break_time] = hash.delete(:breakTime).to_i
+
+    hash.compact
+  end
 end
