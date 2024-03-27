@@ -11,6 +11,8 @@ class Life < ApplicationRecord
   end
 
   has_many :sleeps, dependent: :destroy
+  has_many :caterpillars, dependent: :destroy
+  has_many :hiits, dependent: :destroy
 
   def start
     raise 'already finished' if has_finished?
