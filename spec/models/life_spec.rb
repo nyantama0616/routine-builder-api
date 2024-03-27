@@ -72,6 +72,37 @@ RSpec.describe Life, type: :model do
     end
   end
 
+  describe "#status" do
+    before do
+      @life = Life.create_and_start
+    end
+
+    it "status is none" do
+      expect(@life.status).to eq "none"
+    end
+
+    it "status is Sleep When sleeping" do
+      sleep = Sleep.create_and_start
+      expect(@life.status).to eq Life::Status::Sleep
+    end
+
+    it "status is Nap When napping" do
+      nap = Sleep.create_and_start(nap: true)
+      expect(@life.status).to eq Life::Status::Nap
+
+      nap.finish
+      expect(@life.status).to eq Life::Status::None
+    end
+
+    it "status is Caterpillar When Caterpillar" do
+      caterpillar = Caterpillar.create_and_start! "1234"
+      expect(@life.status).to eq Life::Status::Caterpillar
+
+      caterpillar.finish
+      expect(@life.status).to eq Life::Status::None
+    end
+  end
+
   describe "other method" do
     before do
       @life = Life.create_and_start

@@ -1,4 +1,12 @@
 class Sleep < ApplicationRecord
+  class << self
+    def create_and_start(nap: false)
+      sleep = Sleep.create(life: Life.today)
+      sleep.start nap: nap
+      sleep
+    end
+  end
+
   belongs_to :life
   
   def info

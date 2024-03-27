@@ -47,6 +47,16 @@ class Life < ApplicationRecord
     }
   end
 
+  def status
+    if (sleep = sleeps.last) && !sleep.has_finished?
+      sleep.nap? ? Status::Nap : Status::Sleep
+    elsif (cat = caterpillars.last) && !cat.finished?
+      Status::Caterpillar
+    else
+      Status::None
+    end
+  end
+
   private
 
   def check_valid!
