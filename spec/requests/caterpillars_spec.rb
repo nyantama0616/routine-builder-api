@@ -74,6 +74,11 @@ RSpec.describe "Caterpillars", type: :request do
       expect(response).to have_http_status(200)
       expect(Caterpillar.count).to eq 2
     end
+
+    it "todayLifeが返ってくる" do
+      json = JSON.parse(response.body)["todayLife"]
+      expect(json).to eq(Life.today.info.as_json)
+    end
   end
 
   describe "POST /caterpillars/stop" do
@@ -102,6 +107,11 @@ RSpec.describe "Caterpillars", type: :request do
     it "caterpillar has stopped" do
       caterpillar = Caterpillar.last
       expect(caterpillar.timer.stopped?).to be_truthy
+    end
+
+    it "todayLifeが返ってくる" do
+      json = JSON.parse(response.body)["todayLife"]
+      expect(json).to eq(Life.today.info.as_json)
     end
   end
 
@@ -138,6 +148,11 @@ RSpec.describe "Caterpillars", type: :request do
       json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
       expect(json["errors"]).to eq ["Timer has already finished."]
+    end
+
+    it "todayLifeが返ってくる" do
+      json = JSON.parse(response.body)["todayLife"]
+      expect(json).to eq(Life.today.info.as_json)
     end
   end
 end

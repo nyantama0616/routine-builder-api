@@ -52,6 +52,11 @@ RSpec.describe "Sleeps", type: :request do
       sleep = JSON.parse(response.body)["sleep"]
       expect(sleep["isNap"]).to eq(true)
     end
+
+    it "todayLifeが返ってくる" do
+      json = JSON.parse(response.body)["todayLife"]
+      expect(json).to eq(Life.today.info.as_json)
+    end
   end
 
   describe "POST /sleeps/finish" do
@@ -74,6 +79,11 @@ RSpec.describe "Sleeps", type: :request do
     it "2回目のリクエストでエラーになる" do
       post '/sleeps/finish'
       expect(response).to have_http_status(400)
+    end
+
+    it "todayLifeが返ってくる" do
+      json = JSON.parse(response.body)["todayLife"]
+      expect(json).to eq(Life.today.info.as_json)
     end
   end
 end
