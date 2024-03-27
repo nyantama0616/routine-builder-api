@@ -1,8 +1,13 @@
 class Hiit < ApplicationRecord
   class << self
     #行ったラウンド数を渡す
-    def create_train!(count)
-      Hiit.create!(work_time: Hiit.work_time, break_time: Hiit.break_time, round_count: count, life: Life.today)
+    def create_train!(params)
+      Hiit.create!(
+        round_count: params[:round_count],
+        work_time: params[:work_time] || Hiit.work_time,
+        break_time: params[:break_time] || Hiit.break_time, 
+        life: Life.today
+      )
     end
 
     private
@@ -38,6 +43,12 @@ class Hiit < ApplicationRecord
 
   define_accessor :work_time, :break_time, :round_count
   create_file_if_not_exist!
+
+  with_options presence: true do
+    validates :work_time
+    validates :break_time
+    validates :round_count
+  end
 
   def info
     {
