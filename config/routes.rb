@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   post "/sleeps/start", to: "sleeps#start"
   post "/sleeps/finish", to: "sleeps#finish"
 
-  resources :hiits, only: %i[create]
-
   #いもむしトレーニング
   get "/caterpillars", to: "caterpillars#index"
   post "/caterpillars/start", to: "caterpillars#start"
@@ -17,4 +15,8 @@ Rails.application.routes.draw do
   #水
   get "/waters", to: "waters#index"
   post "/waters/drink", to: "waters#drink"
+
+  #Hiit
+  post "/hiits", to: "hiits#create"
+  patch "/hiits/setting", to: "hiits#setting"
 end

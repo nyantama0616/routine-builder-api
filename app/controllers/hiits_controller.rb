@@ -9,14 +9,26 @@ class HiitsController < ApplicationController
     end
   end
 
+  def setting
+    begin
+      Hiit.update_setting!(setting_params)
+      
+      render json: { hiitSetting: Hiit.setting_info }
+    rescue => exception
+      render json: { errors: [exception.message] }, status: :bad_request
+    end
+  end
+
   private
 
   def hiit_params
     hash = params.require(:hiit).permit(:roundCount, :workTime, :breakTime)
     hash[:round_count] = hash.delete(:roundCount).to_i
-    hash[:work_time] = hash.delete(:workTime)
-    hash[:break_time] = hash.delete(:breakTime)
+    hash[:work_time] = hash.delete(:workTime).to_i
+    hash[:break_time] = hash.delete(:breakTime).to_i
     
     hash.compact
   end
+
+  alias :setting_params :hiit_params
 end

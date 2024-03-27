@@ -33,4 +33,29 @@ RSpec.describe "Hiits", type: :request do
       expect(json["hiit"]).to eq hiit.info.stringify_keys
     end
   end
+
+  describe "PATCH /hiits/settings" do
+    before do
+      Hiit.work_time = 1
+      Hiit.break_time = 2
+      Hiit.round_count = 3
+
+      patch "/hiits/setting", params: { hiit: { workTime: 10, breakTime: 20, roundCount: 30 } }
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "all settings are updated" do
+      expect(Hiit.work_time).to eq 10
+      expect(Hiit.break_time).to eq 20
+      expect(Hiit.round_count).to eq 30
+    end
+
+    it "returns hiit setting" do
+      json = JSON.parse(response.body)
+      expect(json["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
+    end
+  end
 end

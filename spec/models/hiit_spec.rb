@@ -44,6 +44,29 @@ RSpec.describe Hiit, type: :model do
       expect(Hiit.break_time).to eq 2
       expect(Hiit.round_count).to eq 3
     end
+
+    it "integer以外の値を設定しようとするとエラーが発生する" do
+      expect{ Hiit.work_time = "1" }.to raise_error(RuntimeError)
+    end
+
+    it "update setting" do
+      Hiit.update_setting!({work_time: 10, break_time: 20, round_count: 30})
+      expect(Hiit.work_time).to eq 10
+      expect(Hiit.break_time).to eq 20
+      expect(Hiit.round_count).to eq 30
+    end
+
+    it "break_timeが省略された場合は、break_timeは変更されない" do
+      Hiit.update_setting!({work_time: 10, round_count: 30})
+      expect(Hiit.work_time).to eq 10
+      expect(Hiit.break_time).to eq 0
+      expect(Hiit.round_count).to eq 30
+    end
+
+    it "setting_info" do
+      Hiit.update_setting!({work_time: 10, break_time: 20, round_count: 30})
+      expect(Hiit.setting_info).to eq({roundCount: 30, workTime: 10, breakTime: 20})
+    end
   end
 
   describe "Create Train" do

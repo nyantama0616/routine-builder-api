@@ -10,6 +10,20 @@ class Hiit < ApplicationRecord
       )
     end
 
+    def update_setting!(params)
+      Hiit.work_time = params[:work_time] || Hiit.work_time
+      Hiit.break_time = params[:break_time] || Hiit.break_time
+      Hiit.round_count = params[:round_count] || Hiit.round_count
+    end
+
+    def setting_info
+      {
+        roundCount: Hiit.round_count,
+        workTime: Hiit.work_time,
+        breakTime: Hiit.break_time
+      }
+    end
+
     private
 
     def define_accessor(*methods)
@@ -24,6 +38,8 @@ class Hiit < ApplicationRecord
 
         #setter
         define_singleton_method("#{method_name}=") do |value|
+          raise "value must be Integer" if value.class != Integer
+
           json = JSON.parse(File.read("#{dir}/hiit.json")).deep_symbolize_keys
           json[method_name] = value
           File.write("#{dir}/hiit.json", JSON.pretty_generate(json))
