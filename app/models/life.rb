@@ -15,22 +15,22 @@ class Life < ApplicationRecord
   has_many :hiits, dependent: :destroy
 
   def start
-    raise 'already finished' if has_finished?
-    raise 'already started' if has_started?
+    raise 'already finished' if finished?
+    raise 'already started' if started?
     update(started_at: Time.current)
   end
 
-  def has_started?
+  def started?
     started_at.present?
   end
 
   def finish
-    raise 'not started' unless has_started?
-    raise 'already finished' if has_finished?
+    raise 'not started' unless started?
+    raise 'already finished' if finished?
     update(finished_at: Time.current)
   end
 
-  def has_finished?
+  def finished?
     finished_at.present?
   end
 
@@ -48,7 +48,7 @@ class Life < ApplicationRecord
   end
 
   def status
-    if (sleep = sleeps.last) && !sleep.has_finished?
+    if (sleep = sleeps.last) && !sleep.finished?
       sleep.nap? ? Status::Nap : Status::Sleep
     elsif (cat = caterpillars.last) && !cat.finished?
       Status::Caterpillar
@@ -60,7 +60,7 @@ class Life < ApplicationRecord
   private
 
   def check_valid!
-    raise 'already finished' if has_finished?
-    raise 'not started' unless has_started?
+    raise 'already finished' if finished?
+    raise 'not started' unless started?
   end
 end

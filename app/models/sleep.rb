@@ -18,18 +18,14 @@ class Sleep < ApplicationRecord
   end
 
   def start(nap: false)
-    raise 'already finished' if has_finished?
-    raise 'already started' if has_started?
+    raise 'already finished' if finished?
+    raise 'already started' if started?
     update(started_at: Time.current, nap: nap)
   end
 
-  def has_started?
-    started_at.present?
-  end
-
   def finish
-    raise 'not started' unless has_started?
-    raise 'already finished' if has_finished?
+    raise 'not started' unless started?
+    raise 'already finished' if finished?
     update(finished_at: Time.current)
 
     # 睡眠が終わったら、Lifeが終了し、新しいLifeが始まる
@@ -41,7 +37,11 @@ class Sleep < ApplicationRecord
     end
   end
 
-  def has_finished?
+  def started?
+    started_at.present?
+  end
+
+  def finished?
     finished_at.present?
   end
 end

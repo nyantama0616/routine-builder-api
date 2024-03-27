@@ -7,7 +7,7 @@ class SleepsController < ApplicationController
   def start
     sleep = Sleep.last
 
-    if sleep == nil || sleep.has_finished?
+    if sleep == nil || sleep.finished?
       sleep = Sleep.create! life: Life.today
     end
     

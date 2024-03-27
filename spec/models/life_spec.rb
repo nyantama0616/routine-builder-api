@@ -34,8 +34,8 @@ RSpec.describe Life, type: :model do
       expect(@life.started_at.zone).to eq 'JST'
     end
 
-    it "has_started? is true" do
-      expect(@life.has_started?).to be_truthy
+    it "started? is true" do
+      expect(@life.started?).to be_truthy
     end
 
     it "raise error if already started" do
@@ -58,8 +58,8 @@ RSpec.describe Life, type: :model do
       expect(@life.finished_at).to be_within(1.second).of(Time.current)
     end
 
-    it "has_finished? is true" do
-      expect(@life.has_finished?).to be_truthy
+    it "finished? is true" do
+      expect(@life.finished?).to be_truthy
     end
 
     it "raise error if not started" do

@@ -48,6 +48,10 @@ RSpec.describe Sleep, type: :model do
       sleep.start(nap: true)
       expect(sleep.nap?).to eq true
     end
+
+    it "started?がtrueになる" do
+      expect(@sleep.started?).to eq true
+    end
   
     it "sleep#startを2回実行すると、エラーになる" do
       expect { @sleep.start }.to raise_error('already started')
@@ -68,6 +72,10 @@ RSpec.describe Sleep, type: :model do
 
     it "finished_atが現在時刻になる" do
       expect(@sleep.finished_at).to be_within(1.second).of(Time.current)
+    end
+
+    it "finished?がtrueになる" do
+      expect(@sleep.finished?).to eq true
     end
   
     it "sleep#startを実行する前に実行すると、エラーになる" do
