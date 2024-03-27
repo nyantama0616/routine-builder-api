@@ -112,5 +112,11 @@ RSpec.describe Life, type: :model do
       @life.drink_water(200)
       expect(@life.water).to eq 200
     end
+
+    it "#info" do
+      info = @life.info
+      expect(info[:startedAt]).to be_within(1.second).of(@life.started_at)
+      expect(info[:status]).to eq @life.status
+    end
   end
 end

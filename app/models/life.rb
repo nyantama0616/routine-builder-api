@@ -57,6 +57,13 @@ class Life < ApplicationRecord
     end
   end
 
+  def info
+    {
+      startedAt: started_at,
+      status: status,
+    }
+  end
+
   private
 
   def check_valid!
