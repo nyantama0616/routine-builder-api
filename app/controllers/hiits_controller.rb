@@ -1,8 +1,9 @@
 class HiitsController < ApplicationController
-  def create
+  def create  
     begin
-      hiit = Hiit.create_train!(hiit_params[:round_count])
-      render json: { hiit: hiit.info }, status: :created
+      hiit = Hiit.create_train!(hiit_params)
+      
+      render json: { hiit: hiit.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
@@ -11,8 +12,11 @@ class HiitsController < ApplicationController
   private
 
   def hiit_params
-    hash = params.require(:hiit).permit(:roundCount)
-    hash[:round_count] = hash.delete(:roundCount)
-    hash
+    hash = params.require(:hiit).permit(:roundCount, :workTime, :breakTime)
+    hash[:round_count] = hash.delete(:roundCount).to_i
+    hash[:work_time] = hash.delete(:workTime)
+    hash[:break_time] = hash.delete(:breakTime)
+    
+    hash.compact
   end
 end
