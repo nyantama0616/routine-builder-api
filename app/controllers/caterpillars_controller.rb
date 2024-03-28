@@ -1,4 +1,6 @@
 class CaterpillarsController < ApplicationController
+  before_action :reject_if_unauthorized!, only: [:start, :stop, :finish]
+
   def index
     caterpillar = Caterpillar.in_progress
     inProgress = caterpillar ? { caterpillar: caterpillar.info, timer: caterpillar.timer.info } : nil

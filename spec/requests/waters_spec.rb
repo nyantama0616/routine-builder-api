@@ -21,7 +21,7 @@ RSpec.describe "Waters", type: :request do
   describe "POST /waters/drink" do
     before do
       Life.create_and_start
-      post "/waters/drink", params: { xml: 200 }
+      post "/waters/drink", params: { xml: 200 }, headers: headers_with_access_key
     end
     
     it "returns 200" do
@@ -37,6 +37,11 @@ RSpec.describe "Waters", type: :request do
     it "increases water amount" do
       life = Life.today
       expect(life.water).to eq 200
+    end
+
+    it "access-keyなしだとエラーになる" do
+      post "/waters/drink", params: { xml: 200 }
+      expect(response).to have_http_status(401)
     end
   end
 end

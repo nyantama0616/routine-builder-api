@@ -22,7 +22,7 @@ RSpec.describe "Hiits", type: :request do
   describe "POST /hiits" do
     before do
       Life.create_and_start
-      post "/hiits", params: { hiit: { roundCount: 1, workTime: 2, breakTime: 3 } }
+      post "/hiits", params: { hiit: { roundCount: 1, workTime: 2, breakTime: 3 } }, headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -50,6 +50,11 @@ RSpec.describe "Hiits", type: :request do
       
       expect(json["hiit"]).to eq hiit.info.stringify_keys
     end
+
+    it "access-keyなしだとエラーになる" do
+      post "/hiits", params: { hiit: { roundCount: 1, workTime: 2, breakTime: 3 } }
+      expect(response).to have_http_status(401)
+    end
   end
 
   describe "PATCH /hiits/settings" do
@@ -58,7 +63,7 @@ RSpec.describe "Hiits", type: :request do
       Hiit.break_time = 2
       Hiit.round_count = 3
 
-      patch "/hiits/setting", params: { hiitSetting: { workTime: 10, breakTime: 20, roundCount: 30 } }
+      patch "/hiits/setting", params: { hiitSetting: { workTime: 10, breakTime: 20, roundCount: 30 } }, headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -74,6 +79,11 @@ RSpec.describe "Hiits", type: :request do
     it "returns hiit setting" do
       json = JSON.parse(response.body)
       expect(json["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
+    end
+
+    it "access-keyなしだとエラーになる" do
+      patch "/hiits/setting", params: { hiitSetting: { workTime: 10, breakTime: 20, roundCount: 30 } }
+      expect(response).to have_http_status(401)
     end
   end
 end

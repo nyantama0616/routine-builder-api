@@ -1,4 +1,6 @@
 class HiitsController < ApplicationController
+  before_action :reject_if_unauthorized!, only: [:create, :setting]
+
   def index
     render json: { hiitSetting: Hiit.setting_info }
   end

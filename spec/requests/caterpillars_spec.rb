@@ -32,7 +32,7 @@ RSpec.describe "Caterpillars", type: :request do
   describe "POST /caterpillars/start" do
     before do
       Life.create_and_start
-      post "/caterpillars/start", params: { pattern: "1234" }
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -52,15 +52,15 @@ RSpec.describe "Caterpillars", type: :request do
     end
 
     it "Occur error if last caterpillar has not finished" do
-      post "/caterpillars/start", params: { pattern: "1234" }
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
       json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
       expect(json["errors"]).to eq ["Timer has already started."]
     end
 
     it "can restart after stop" do
-      post "/caterpillars/stop"
-      post "/caterpillars/start"
+      post "/caterpillars/stop", headers: headers_with_access_key
+      post "/caterpillars/start", headers: headers_with_access_key
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(json["caterpillar"]["pattern"]).to eq "1234"
@@ -68,8 +68,8 @@ RSpec.describe "Caterpillars", type: :request do
     end
 
     it "new caterpillar is created if last caterpillar has finished" do
-      post "/caterpillars/finish"
-      post "/caterpillars/start", params: { pattern: "1234" }
+      post "/caterpillars/finish", headers: headers_with_access_key
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
       json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(Caterpillar.count).to eq 2
@@ -79,13 +79,18 @@ RSpec.describe "Caterpillars", type: :request do
       json = JSON.parse(response.body)["todayLife"]
       expect(json).to eq(Life.today.info.as_json)
     end
+
+    it "headerにdata-access-keyを含めないとエラーになる" do
+      post "/caterpillars/start", params: { pattern: "1234" }
+      expect(response).to have_http_status(401)
+    end
   end
 
   describe "POST /caterpillars/stop" do
     before do
       Life.create_and_start
-      post "/caterpillars/start", params: { pattern: "1234" }
-      post "/caterpillars/stop"
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
+      post "/caterpillars/stop", headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -113,13 +118,19 @@ RSpec.describe "Caterpillars", type: :request do
       json = JSON.parse(response.body)["todayLife"]
       expect(json).to eq(Life.today.info.as_json)
     end
+
+    it "access-keyなしだとエラーになる" do
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
+      post "/caterpillars/stop"
+      expect(response).to have_http_status(401)
+    end
   end
 
   describe "POST /caterpillars/finish" do
     before do
       Life.create_and_start
-      post "/caterpillars/start", params: { pattern: "1234" }
-      post "/caterpillars/finish"
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
+      post "/caterpillars/finish", headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -144,7 +155,7 @@ RSpec.describe "Caterpillars", type: :request do
     end
 
     it "Occur error if caterpillar has not started" do
-      post "/caterpillars/finish"
+      post "/caterpillars/finish", headers: headers_with_access_key
       json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
       expect(json["errors"]).to eq ["Timer has already finished."]
@@ -153,6 +164,12 @@ RSpec.describe "Caterpillars", type: :request do
     it "todayLifeが返ってくる" do
       json = JSON.parse(response.body)["todayLife"]
       expect(json).to eq(Life.today.info.as_json)
+    end
+
+    it "access-keyなしだとエラーになる" do
+      post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
+      post "/caterpillars/finish"
+      expect(response).to have_http_status(401)
     end
   end
 end

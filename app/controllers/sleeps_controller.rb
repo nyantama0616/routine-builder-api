@@ -1,4 +1,6 @@
 class SleepsController < ApplicationController
+  before_action :reject_if_unauthorized!, only: [:start, :finish]
+
   def latest
     sleep = Sleep.last
     render json: { sleep: sleep&.info }

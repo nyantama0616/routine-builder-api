@@ -1,4 +1,6 @@
 class WatersController < ApplicationController
+  before_action :reject_if_unauthorized!, only: [:drink]
+
   def index
     life = Life.today
     render json: { amount: life.water_info }

@@ -22,7 +22,7 @@ RSpec.describe "Sleeps", type: :request do
   describe "POST /sleeps/start" do
     before do
       Life.create_and_start
-      post '/sleeps/start'
+      post '/sleeps/start', headers: headers_with_access_key
       @sleep = Sleep.last
     end
 
@@ -36,7 +36,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "2回目のリクエストでエラーになる" do
-      post '/sleeps/start'
+      post '/sleeps/start', headers: headers_with_access_key
       expect(response).to have_http_status(400)
     end
 
@@ -46,8 +46,8 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "nap: trueで実行すると、nap?がtrueになる" do
-      post "/sleeps/finish"
-      post '/sleeps/start', params: { isNap: true }
+      post "/sleeps/finish", headers: headers_with_access_key
+      post '/sleeps/start', params: { isNap: true }, headers: headers_with_access_key
       
       sleep = JSON.parse(response.body)["sleep"]
       expect(sleep["isNap"]).to eq(true)
@@ -57,13 +57,19 @@ RSpec.describe "Sleeps", type: :request do
       json = JSON.parse(response.body)["todayLife"]
       expect(json).to eq(Life.today.info.as_json)
     end
+
+    it "headerにdata-access-keyを含めないとエラーになる" do
+      post '/sleeps/finish', headers: headers_with_access_key
+      post '/sleeps/start'
+      expect(response).to have_http_status(401)
+    end
   end
 
   describe "POST /sleeps/finish" do
     before do
       Life.create_and_start
-      post '/sleeps/start'
-      post '/sleeps/finish'
+      post '/sleeps/start', headers: headers_with_access_key
+      post '/sleeps/finish', headers: headers_with_access_key
       @sleep = Sleep.last
     end
 
@@ -77,13 +83,19 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "2回目のリクエストでエラーになる" do
-      post '/sleeps/finish'
+      post '/sleeps/finish', headers: headers_with_access_key
       expect(response).to have_http_status(400)
     end
 
     it "todayLifeが返ってくる" do
       json = JSON.parse(response.body)["todayLife"]
       expect(json).to eq(Life.today.info.as_json)
+    end
+
+    it "headerにdata-access-keyを含めないとエラーになる" do
+      post '/sleeps/start', headers: headers_with_access_key
+      post '/sleeps/finish'
+      expect(response).to have_http_status(401)
     end
   end
 end
