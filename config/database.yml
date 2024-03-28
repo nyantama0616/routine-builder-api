@@ -84,5 +84,3 @@ test:
 production:
   <<: *default
   database: routine_builder_api_production
-  username: routine_builder_api
-  password: <%= ENV["ROUTINE_BUILDER_API_DATABASE_PASSWORD"] %>
