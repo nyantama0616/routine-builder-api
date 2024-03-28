@@ -28,4 +28,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/db/data/*
+/db/data/*/*
+!/db/data/development/.keep
+!/db/data/production/.keep
+!/db/data/test/.keep
