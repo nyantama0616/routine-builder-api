@@ -32,3 +32,5 @@
 !/db/data/development/.keep
 !/db/data/production/.keep
 !/db/data/test/.keep
+
+.env*
