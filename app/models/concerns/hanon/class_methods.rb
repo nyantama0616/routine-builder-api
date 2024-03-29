@@ -16,5 +16,35 @@ module Hanon::ClassMethods
       hanon.timer.start
       hanon
     end
+
+    def all_patterns
+      res = {}
+
+      (1..HANON_NUM).each do |num|
+        x = {}
+        (1..PATTERN_NUM).each do |pattern_num|
+          SCALES.each do |scale|
+            pattern = "#{pattern_num}:#{scale}"
+            x[pattern] = 0
+          end
+        end
+        res[num] = x
+      end
+
+      Hanon.all.each do |hanon|
+        res[hanon.num][hanon.pattern] += hanon.timer&.passed_seconds.to_i
+      end
+
+      res
+    end
+
+    def in_progress
+      hanon = Hanon.last
+      if hanon && !hanon.timer.finished?
+        hanon
+      else
+        nil
+      end
+    end
   end
 end

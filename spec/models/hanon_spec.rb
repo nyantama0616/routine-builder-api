@@ -93,4 +93,39 @@ RSpec.describe Hanon, type: :model do
       expect(@hanon.timer.finished?).to be_truthy
     end
   end
+
+  describe "class methods" do
+    before do
+      Life.create_and_start
+    end
+
+    it "all_patterns" do
+      hanon1_1CM = Hanon.create_and_start!(1, "1:CM")
+      Timecop.freeze(5.minute.from_now)
+      hanon1_1CM.finish
+
+      hanon3_5DSharpm = Hanon.create_and_start!(3, "5:D#m")
+      Timecop.freeze(10.minute.from_now)
+      hanon3_5DSharpm.finish
+
+      hanon1_1CM = Hanon.create_and_start!(1, "1:CM")
+      Timecop.freeze(30.second.from_now)
+
+      patterns = Hanon.all_patterns
+
+      expect(patterns[1]["1:CM"]).to eq 5*60 + 30
+      expect(patterns[3]["5:D#m"]).to eq 10*60
+      expect(patterns[1]["1:Cm"]).to eq 0
+    end
+
+    it "in_progress" do
+      expect(Hanon.in_progress).to eq nil
+
+      hanon = Hanon.create_and_start!(1, "1:CM")
+      expect(Hanon.in_progress).to eq hanon
+
+      hanon.finish
+      expect(Hanon.in_progress).to eq nil
+    end
+  end
 end
