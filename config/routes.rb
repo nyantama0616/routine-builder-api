@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   post "/caterpillars/stop", to: "caterpillars#stop"
   post "/caterpillars/finish", to: "caterpillars#finish"
 
+  #Hanon
+  get "/hanons", to: "hanons#index"
+  post "/hanons/start", to: "hanons#start"
+  post "/hanons/stop", to: "hanons#stop"
+  post "/hanons/finish", to: "hanons#finish"
+
   #水
   get "/waters", to: "waters#index"
   post "/waters/drink", to: "waters#drink"

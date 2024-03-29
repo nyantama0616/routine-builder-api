@@ -18,7 +18,7 @@ class CaterpillarsController < ApplicationController
     if last && !last.timer.finished?
       begin
         last.start
-        render json: { caterpillar: last.info, timer: last.timer.info }
+        render json: { caterpillar: last.info, timer: last.timer.info, todayLife: Life.today.info}
       rescue => exception
         render json: { errors: [exception.message] }, status: :bad_request
       end
