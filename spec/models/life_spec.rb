@@ -101,6 +101,14 @@ RSpec.describe Life, type: :model do
       caterpillar.finish
       expect(@life.status).to eq Life::Status::None
     end
+
+    it "status is Hanon When Hanon" do
+      hanon = Hanon.create_and_start! 1, "1:CM"
+      expect(@life.status).to eq Life::Status::Hanon
+
+      hanon.finish
+      expect(@life.status).to eq Life::Status::None
+    end
   end
 
   describe "other method" do

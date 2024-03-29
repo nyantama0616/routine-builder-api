@@ -13,6 +13,7 @@ class Life < ApplicationRecord
   has_many :sleeps, dependent: :destroy
   has_many :caterpillars, dependent: :destroy
   has_many :hiits, dependent: :destroy
+  has_many :hanons, dependent: :destroy
 
   def start
     raise 'already finished' if finished?
@@ -50,8 +51,10 @@ class Life < ApplicationRecord
   def status
     if (sleep = sleeps.last) && !sleep.finished?
       sleep.nap? ? Status::Nap : Status::Sleep
-    elsif (cat = caterpillars.last) && !cat.finished?
+    elsif (cat = caterpillars.last) && cat.timer.running?
       Status::Caterpillar
+    elsif (hanon = hanons.last) && hanon.timer.running?
+      Status::Hanon
     else
       Status::None
     end
