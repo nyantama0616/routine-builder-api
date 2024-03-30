@@ -1,33 +1,16 @@
 class Caterpillar < ApplicationRecord
   include ClassMethods
-  
+  include Timerable
+
   belongs_to :life
-  has_one :timer, as: :target, dependent: :destroy
   validates :life, presence: true
   validate :validate_pattern
 
   def info
     {
       pattern: pattern,
-      passedSeconds: timer&.passed_seconds.to_i,
+      passedSeconds: passed_seconds,
     }
-  end
-
-  def start
-    timer.start  
-  end
-
-  def stop
-    timer.stop
-  end
-
-  def finish
-    timer.finish
-  end
-
-  #TODO: いる？
-  def finished?
-    timer.finished?
   end
 
   private
