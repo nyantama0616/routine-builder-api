@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Caterpillar, type: :model do
-  it_behaves_like "timerable", Caterpillar, -> { Caterpillar.create_and_start!("1234") }
+  it_behaves_like "timerable", Caterpillar, -> { Caterpillar.create_and_start! pattern: "1234" }
   
   describe "Validations" do
     before do
@@ -42,7 +42,7 @@ RSpec.describe Caterpillar, type: :model do
   describe "other methods" do
     before do
       Life.create_and_start
-      @caterpillar = Caterpillar.create_and_start!("1234")
+      @caterpillar = Caterpillar.create_and_start! pattern: "1234"
     end
 
     it "info returns {pattern, passedSeconds}" do
@@ -53,7 +53,7 @@ RSpec.describe Caterpillar, type: :model do
   describe "associations" do
     before do
       Life.create_and_start
-      @caterpillar = Caterpillar.create_and_start!("1234")
+      @caterpillar = Caterpillar.create_and_start! pattern: "1234"
     end
 
     it "belongs_to :life" do
@@ -67,22 +67,22 @@ RSpec.describe Caterpillar, type: :model do
     end
 
     it "create_and_start" do
-      caterpillar = Caterpillar.create_and_start!("1234")
+      caterpillar = Caterpillar.create_and_start! pattern: "1234"
       expect(caterpillar.life).to eq Life.today
       expect(caterpillar.pattern).to eq "1234"
       expect(caterpillar.timer.started?).to eq true
     end
 
     it "all_patterns" do
-      cat1234 = Caterpillar.create_and_start!("1234")
+      cat1234 = Caterpillar.create_and_start! pattern: "1234"
       Timecop.freeze(5.minute.from_now)
       cat1234.finish
 
-      cat4321 = Caterpillar.create_and_start!("4321")
+      cat4321 = Caterpillar.create_and_start! pattern: "4321"
       Timecop.freeze(10.minute.from_now)
       cat4321.finish
 
-      cat1234 = Caterpillar.create_and_start!("1234")
+      cat1234 = Caterpillar.create_and_start! pattern: "1234"
       Timecop.freeze(30.second.from_now)
 
       patterns = Caterpillar.all_patterns

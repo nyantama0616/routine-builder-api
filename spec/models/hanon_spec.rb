@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Hanon, type: :model do
-  it_behaves_like "timerable", Hanon, -> { Hanon.create_and_start!(1, "1:CM") }
+  it_behaves_like "timerable", Hanon, -> { Hanon.create_and_start! num: 1, pattern: "1:CM" }
 
   describe 'validations' do
     before do
@@ -45,7 +45,7 @@ RSpec.describe Hanon, type: :model do
   describe 'associations' do
     before do
       Life.create_and_start
-      @hanon = Hanon.create_and_start!(1, "1:CM")
+      @hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
     end
 
     it "belongs to life" do
@@ -57,7 +57,7 @@ RSpec.describe Hanon, type: :model do
   describe 'methods' do
     before do
       Life.create_and_start
-      @hanon = Hanon.create_and_start!(1, "1:CM")
+      @hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
     end
 
     it "info" do
@@ -76,15 +76,15 @@ RSpec.describe Hanon, type: :model do
     end
 
     it "all_patterns" do
-      hanon1_1CM = Hanon.create_and_start!(1, "1:CM")
+      hanon1_1CM = Hanon.create_and_start! num: 1, pattern: "1:CM"
       Timecop.freeze(5.minute.from_now)
       hanon1_1CM.finish
 
-      hanon3_5DSharpm = Hanon.create_and_start!(3, "5:D#m")
+      hanon3_5DSharpm = Hanon.create_and_start! num: 3, pattern: "5:D#m"
       Timecop.freeze(10.minute.from_now)
       hanon3_5DSharpm.finish
 
-      hanon1_1CM = Hanon.create_and_start!(1, "1:CM")
+      hanon1_1CM = Hanon.create_and_start! num: 1, pattern: "1:CM"
       Timecop.freeze(30.second.from_now)
 
       patterns = Hanon.all_patterns

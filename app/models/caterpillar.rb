@@ -1,6 +1,6 @@
 class Caterpillar < ApplicationRecord
-  include ClassMethods
   include Timerable
+  include ClassMethods
 
   belongs_to :life
   validates :life, presence: true

@@ -95,7 +95,7 @@ RSpec.describe Life, type: :model do
     end
 
     it "status is Caterpillar When Caterpillar" do
-      caterpillar = Caterpillar.create_and_start! "1234"
+      caterpillar = Caterpillar.create_and_start! pattern: "1234"
       expect(@life.status).to eq Life::Status::Caterpillar
 
       caterpillar.finish
@@ -103,7 +103,7 @@ RSpec.describe Life, type: :model do
     end
 
     it "status is Hanon When Hanon" do
-      hanon = Hanon.create_and_start! 1, "1:CM"
+      hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
       expect(@life.status).to eq Life::Status::Hanon
 
       hanon.finish

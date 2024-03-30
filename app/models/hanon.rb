@@ -1,6 +1,6 @@
 class Hanon < ApplicationRecord
-  include ClassMethods
   include Timerable
+  include ClassMethods
 
   belongs_to :life
   

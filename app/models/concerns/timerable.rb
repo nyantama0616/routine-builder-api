@@ -5,6 +5,21 @@ module Timerable
     has_one :timer, as: :target, dependent: :destroy
   end
 
+  class_methods do
+    def in_progress
+      last = self.last
+      if last && !last.timer.finished?
+        last
+      else
+        nil
+      end
+    end
+
+    def create_and_start!(**params)
+      raise NotImplementedError, "You must implement #{self}##{__method__}"
+    end
+  end
+
   def start
     timer.start
   end
@@ -23,16 +38,5 @@ module Timerable
 
   def passed_seconds
     timer&.passed_seconds.to_i
-  end
-
-  class_methods do
-    def in_progress
-      last = self.last
-      if last && !last.timer.finished?
-        last
-      else
-        nil
-      end
-    end
   end
 end
