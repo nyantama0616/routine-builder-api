@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Hanon, type: :model do
+  it_behaves_like "timerable", -> { Hanon.create_and_start!(1, "1:CM") }
+
   describe 'validations' do
     before do
       Life.create_and_start
@@ -50,16 +52,6 @@ RSpec.describe Hanon, type: :model do
       life = Life.today
       expect(@hanon.life).to eq life
     end
-
-    it "has one timer" do
-      expect(@hanon.timer).to be_present
-    end
-
-    it "destroys timer when destroyed" do
-      timer = @hanon.timer
-      @hanon.destroy
-      expect(Timer.find_by(id: timer.id)).to be_nil
-    end
   end
 
   describe 'methods' do
@@ -75,22 +67,6 @@ RSpec.describe Hanon, type: :model do
         pattern: @hanon.pattern,
         passedSeconds: @hanon.timer.passed_seconds.to_i,
       })
-    end
-
-    it "start" do
-      @hanon.stop
-      @hanon.start
-      expect(@hanon.timer.started?).to be_truthy
-    end
-
-    it "stop" do
-      @hanon.stop
-      expect(@hanon.timer.stopped?).to be_truthy
-    end
-
-    it "finish" do
-      @hanon.finish
-      expect(@hanon.timer.finished?).to be_truthy
     end
   end
 
