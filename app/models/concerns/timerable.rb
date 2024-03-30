@@ -39,4 +39,8 @@ module Timerable
   def passed_seconds
     timer&.passed_seconds.to_i
   end
+
+  def info
+    {}
+  end
 end
