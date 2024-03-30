@@ -12,8 +12,7 @@ RSpec.describe "Homes", type: :request do
     end
 
     it "returns todayLife" do
-      json = JSON.parse(response.body)
-      expect(json['todayLife']).to eq Life.today.info.as_json
+      expect(response_body['todayLife']).to eq Life.today.info.as_json
     end
   end
 end

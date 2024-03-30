@@ -22,7 +22,6 @@ class SleepsController < ApplicationController
       return
     end
 
-    #TODO: ユーザの状態を返す
     render json: { sleep: sleep.info, todayLife: Life.today.info }
   end
   

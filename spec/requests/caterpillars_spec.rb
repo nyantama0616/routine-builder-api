@@ -26,19 +26,18 @@ RSpec.describe "Caterpillars", type: :request do
     end
 
     it "returns caterpillar in progress" do
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress["caterpillar"]["pattern"]).to eq @caterpillar.pattern
       expect(in_progress["timer"]["isRunning"]).to be true
 
       @caterpillar.finish
       get "/caterpillars"
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress).to be_nil
     end
 
     it "returns all patterns" do
-      patterns = JSON.parse(response.body)["patterns"]
-      expect(patterns).to eq Caterpillar.all_patterns
+      expect(response_body["patterns"]).to eq Caterpillar.all_patterns
     end
   end
 
@@ -52,24 +51,21 @@ RSpec.describe "Caterpillars", type: :request do
 
     it "Occur error if last caterpillar has not finished" do
       post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
-      json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
-      expect(json["errors"]).to eq ["Timer has already started."]
+      expect(response_body["errors"]).to eq ["Timer has already started."]
     end
 
     it "can restart after stop" do
       post "/caterpillars/stop", headers: headers_with_access_key
       post "/caterpillars/start", headers: headers_with_access_key
-      json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(json["caterpillar"]["pattern"]).to eq "1234"
-      expect(json["timer"]["isRunning"]).to be_truthy
+      expect(response_body["caterpillar"]["pattern"]).to eq "1234"
+      expect(response_body["timer"]["isRunning"]).to be_truthy
     end
 
     it "new caterpillar is created if last caterpillar has finished" do
       post "/caterpillars/finish", headers: headers_with_access_key
       post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
-      json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(Caterpillar.count).to eq 2
     end
@@ -117,9 +113,8 @@ RSpec.describe "Caterpillars", type: :request do
 
     it "Occur error if caterpillar has not started" do
       post "/caterpillars/finish", headers: headers_with_access_key
-      json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
-      expect(json["errors"]).to eq ["Timer has already finished."]
+      expect(response_body["errors"]).to eq ["Timer has already finished."]
     end
 
     it "access-keyなしだとエラーになる" do

@@ -14,7 +14,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "returns the latest sleep" do
-      sleep = JSON.parse(response.body)["sleep"]
+      sleep = response_body["sleep"]
       expect(sleep).to eq(@latest_sleep.info.as_json)
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "returns the latest sleep" do
-      sleep = JSON.parse(response.body)["sleep"]
+      sleep = response_body["sleep"]
       expect(sleep).to eq(@sleep.info.as_json)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "defaultではnap?がfalseである" do
-      sleep = JSON.parse(response.body)["sleep"]
+      sleep = response_body["sleep"]
       expect(sleep["isNap"]).to eq(false)
     end
 
@@ -49,13 +49,11 @@ RSpec.describe "Sleeps", type: :request do
       post "/sleeps/finish", headers: headers_with_access_key
       post '/sleeps/start', params: { isNap: true }, headers: headers_with_access_key
       
-      sleep = JSON.parse(response.body)["sleep"]
-      expect(sleep["isNap"]).to eq(true)
+      expect(response_body["sleep"]["isNap"]).to eq(true)
     end
 
     it "todayLifeが返ってくる" do
-      json = JSON.parse(response.body)["todayLife"]
-      expect(json).to eq(Life.today.info.as_json)
+      expect(response_body["todayLife"]).to eq(Life.today.info.as_json)
     end
 
     it "headerにdata-access-keyを含めないとエラーになる" do
@@ -78,8 +76,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "returns the latest sleep" do
-      sleep = JSON.parse(response.body)["sleep"]
-      expect(sleep).to eq(@sleep.info.as_json)
+      expect(response_body["sleep"]).to eq(@sleep.info.as_json)
     end
 
     it "2回目のリクエストでエラーになる" do
@@ -88,8 +85,7 @@ RSpec.describe "Sleeps", type: :request do
     end
 
     it "todayLifeが返ってくる" do
-      json = JSON.parse(response.body)["todayLife"]
-      expect(json).to eq(Life.today.info.as_json)
+      expect(response_body["todayLife"]).to eq(Life.today.info.as_json)
     end
 
     it "headerにdata-access-keyを含めないとエラーになる" do

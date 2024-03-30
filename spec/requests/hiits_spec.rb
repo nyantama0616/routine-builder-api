@@ -14,8 +14,7 @@ RSpec.describe "Hiits", type: :request do
     end
 
     it "returns hiit setting" do
-      json = JSON.parse(response.body)
-      expect(json["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
+      expect(response_body["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
     end
   end
 
@@ -45,10 +44,9 @@ RSpec.describe "Hiits", type: :request do
     end
 
     it "returns hiit info" do
-      json = JSON.parse(response.body)
       hiit = Hiit.last
       
-      expect(json["hiit"]).to eq hiit.info.stringify_keys
+      expect(response_body["hiit"]).to eq hiit.info.stringify_keys
     end
 
     it "access-keyなしだとエラーになる" do
@@ -77,8 +75,7 @@ RSpec.describe "Hiits", type: :request do
     end
 
     it "returns hiit setting" do
-      json = JSON.parse(response.body)
-      expect(json["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
+      expect(response_body["hiitSetting"]).to eq Hiit.setting_info.stringify_keys
     end
 
     it "access-keyなしだとエラーになる" do

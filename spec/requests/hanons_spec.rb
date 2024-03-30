@@ -26,18 +26,18 @@ RSpec.describe "Hanons", type: :request do
     end
 
     it "returns hanon in progress" do
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress["hanon"]["pattern"]).to eq @hanon.pattern
       expect(in_progress["timer"]["isRunning"]).to be true
 
       @hanon.finish
       get "/hanons"
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress).to be_nil
     end
 
     it "returns all patterns" do
-      patterns = JSON.parse(response.body)["patterns"]
+      patterns = response_body["patterns"]
       expect(patterns).to eq Hanon.all_patterns.stringify_keys
     end
   end
