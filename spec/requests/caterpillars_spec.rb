@@ -1,5 +1,18 @@
 require 'rails_helper'
 
+RSpec.shared_examples "returns caterpillars basic response" do
+  it "returns 200" do
+    expect(response).to have_http_status(200)
+  end
+
+  it "returns caterpillar info" do
+    caterpillar = Caterpillar.last
+    expect(response_body["caterpillar"]).to eq caterpillar.info.as_json
+  end
+
+  it_behaves_like "timerable request", Caterpillar
+end
+
 RSpec.describe "Caterpillars", type: :request do
   describe "GET /caterpillars" do
     before do
@@ -35,21 +48,7 @@ RSpec.describe "Caterpillars", type: :request do
       post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
     end
 
-    it "returns 200" do
-      expect(response).to have_http_status(200)
-    end
-
-    it "returns caterpillar info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["caterpillar"].keys).to eq caterpillar.info.keys.map(&:to_s)
-    end
-
-    it "returns timer info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["timer"].keys).to eq caterpillar.timer.info.keys.map(&:to_s)
-    end
+    it_behaves_like "returns caterpillars basic response"
 
     it "Occur error if last caterpillar has not finished" do
       post "/caterpillars/start", params: { pattern: "1234" }, headers: headers_with_access_key
@@ -75,11 +74,6 @@ RSpec.describe "Caterpillars", type: :request do
       expect(Caterpillar.count).to eq 2
     end
 
-    it "todayLifeが返ってくる" do
-      json = JSON.parse(response.body)["todayLife"]
-      expect(json).to eq(Life.today.info.as_json)
-    end
-
     it "headerにdata-access-keyを含めないとエラーになる" do
       post "/caterpillars/start", params: { pattern: "1234" }
       expect(response).to have_http_status(401)
@@ -93,30 +87,11 @@ RSpec.describe "Caterpillars", type: :request do
       post "/caterpillars/stop", headers: headers_with_access_key
     end
 
-    it "returns 200" do
-      expect(response).to have_http_status(200)
-    end
-
-    it "returns caterpillar info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["caterpillar"].keys).to eq caterpillar.info.keys.map(&:to_s)
-    end
-
-    it "returns timer info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["timer"].keys).to eq caterpillar.timer.info.keys.map(&:to_s)
-    end
+    it_behaves_like "returns caterpillars basic response"
 
     it "caterpillar has stopped" do
       caterpillar = Caterpillar.last
       expect(caterpillar.timer.stopped?).to be_truthy
-    end
-
-    it "todayLifeが返ってくる" do
-      json = JSON.parse(response.body)["todayLife"]
-      expect(json).to eq(Life.today.info.as_json)
     end
 
     it "access-keyなしだとエラーになる" do
@@ -133,21 +108,7 @@ RSpec.describe "Caterpillars", type: :request do
       post "/caterpillars/finish", headers: headers_with_access_key
     end
 
-    it "returns 200" do
-      expect(response).to have_http_status(200)
-    end
-
-    it "returns caterpillar info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["caterpillar"].keys).to eq caterpillar.info.keys.map(&:to_s)
-    end
-
-    it "returns timer info" do
-      json = JSON.parse(response.body)
-      caterpillar = Caterpillar.last
-      expect(json["timer"].keys).to eq caterpillar.timer.info.keys.map(&:to_s)
-    end
+    it_behaves_like "returns caterpillars basic response"
 
     it "caterpillar has finished" do
       caterpillar = Caterpillar.last
@@ -159,11 +120,6 @@ RSpec.describe "Caterpillars", type: :request do
       json = JSON.parse(response.body)
       expect(response).to have_http_status(400)
       expect(json["errors"]).to eq ["Timer has already finished."]
-    end
-
-    it "todayLifeが返ってくる" do
-      json = JSON.parse(response.body)["todayLife"]
-      expect(json).to eq(Life.today.info.as_json)
     end
 
     it "access-keyなしだとエラーになる" do
