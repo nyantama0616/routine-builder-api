@@ -109,6 +109,14 @@ RSpec.describe Life, type: :model do
       hanon.finish
       expect(@life.status).to eq Life::Status::None
     end
+
+    it "status is Tooth When Tooth" do
+      tooth = Tooth.create_and_start!
+      expect(@life.status).to eq Life::Status::Tooth
+
+      tooth.finish
+      expect(@life.status).to eq Life::Status::None
+    end
   end
 
   describe "other method" do

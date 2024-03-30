@@ -4,5 +4,6 @@ module Life::Status
   Nap = "nap"
   Caterpillar = "caterpillar"
   Hanon = "hanon"
+  Tooth = "tooth"
   # Hiit = "hiit" //Hiitはタイマーとかないから、Stateなし
 end
