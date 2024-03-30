@@ -17,7 +17,7 @@ RSpec.describe "Hanons", type: :request do
   describe "GET /hanons" do
     before do
       Life.create_and_start
-      @hanon = Hanon.create_and_start!(1, "1:CM")
+      @hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
       get "/hanons"
     end
     

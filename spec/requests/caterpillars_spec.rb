@@ -17,7 +17,7 @@ RSpec.describe "Caterpillars", type: :request do
   describe "GET /caterpillars" do
     before do
       Life.create_and_start
-      @caterpillar = Caterpillar.create_and_start!("1234")
+      @caterpillar = Caterpillar.create_and_start! pattern: "1234"
       get "/caterpillars"
     end
 
