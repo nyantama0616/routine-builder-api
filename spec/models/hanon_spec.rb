@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Hanon, type: :model do
-  it_behaves_like "timerable", -> { Hanon.create_and_start!(1, "1:CM") }
+  it_behaves_like "timerable", Hanon, -> { Hanon.create_and_start!(1, "1:CM") }
 
   describe 'validations' do
     before do
@@ -92,16 +92,6 @@ RSpec.describe Hanon, type: :model do
       expect(patterns[1]["1:CM"]).to eq 5*60 + 30
       expect(patterns[3]["5:D#m"]).to eq 10*60
       expect(patterns[1]["1:Cm"]).to eq 0
-    end
-
-    it "in_progress" do
-      expect(Hanon.in_progress).to eq nil
-
-      hanon = Hanon.create_and_start!(1, "1:CM")
-      expect(Hanon.in_progress).to eq hanon
-
-      hanon.finish
-      expect(Hanon.in_progress).to eq nil
     end
   end
 end

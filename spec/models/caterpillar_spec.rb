@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Caterpillar, type: :model do
-  it_behaves_like "timerable", -> { Caterpillar.create_and_start!("1234") }
+  it_behaves_like "timerable", Caterpillar, -> { Caterpillar.create_and_start!("1234") }
   
   describe "Validations" do
     before do
@@ -90,16 +90,6 @@ RSpec.describe Caterpillar, type: :model do
       expect(patterns["1234"]).to eq 5*60 + 30
       expect(patterns["4321"]).to eq 10*60
       expect(patterns["1243"]).to eq 0
-    end
-
-    it "in_progress" do
-      expect(Caterpillar.in_progress).to eq nil
-
-      cat = Caterpillar.create_and_start!("1234")
-      expect(Caterpillar.in_progress).to eq cat
-
-      cat.finish
-      expect(Caterpillar.in_progress).to eq nil
     end
   end
 end

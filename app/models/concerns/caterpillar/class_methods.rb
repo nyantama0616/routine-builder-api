@@ -24,14 +24,5 @@ module Caterpillar::ClassMethods
 
       res
     end
-
-    def in_progress
-      cat = Caterpillar.last
-      if cat && !cat.finished?
-        cat
-      else
-        nil
-      end
-    end
   end
 end

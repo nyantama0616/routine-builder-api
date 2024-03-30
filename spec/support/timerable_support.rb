@@ -1,7 +1,7 @@
-RSpec.shared_examples "timerable" do |block|
+RSpec.shared_examples "timerable" do |type, instance_block|
   before do
     Life.create_and_start
-    @model = block&.call
+    @model = instance_block&.call
   end
 
   it "has one timer" do
@@ -29,4 +29,11 @@ RSpec.shared_examples "timerable" do |block|
     @model.finish
     expect(@model.timer.finished?).to be true
   end
+
+  it "in_progress" do
+      expect(type.in_progress).to eq @model
+
+      @model.finish
+      expect(type.in_progress).to eq nil
+    end
 end

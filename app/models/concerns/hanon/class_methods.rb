@@ -37,14 +37,5 @@ module Hanon::ClassMethods
 
       res
     end
-
-    def in_progress
-      hanon = Hanon.last
-      if hanon && !hanon.timer.finished?
-        hanon
-      else
-        nil
-      end
-    end
   end
 end

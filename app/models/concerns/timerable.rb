@@ -24,4 +24,15 @@ module Timerable
   def passed_seconds
     timer&.passed_seconds.to_i
   end
+
+  class_methods do
+    def in_progress
+      last = self.last
+      if last && !last.timer.finished?
+        last
+      else
+        nil
+      end
+    end
+  end
 end
