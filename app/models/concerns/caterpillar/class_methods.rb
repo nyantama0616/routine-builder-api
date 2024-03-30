@@ -2,9 +2,9 @@ module Caterpillar::ClassMethods
   extend ActiveSupport::Concern
 
   class_methods do
-    def create_and_start!(pattern)
+    def create_and_start!(**params)
       life = Life.today
-      caterpillar = create!(life: life, pattern: pattern)
+      caterpillar = create!(life: life, pattern: params[:pattern])
       timer = Timer.create!(target: caterpillar)
       timer.start
       caterpillar
@@ -23,15 +23,6 @@ module Caterpillar::ClassMethods
       end
 
       res
-    end
-
-    def in_progress
-      cat = Caterpillar.last
-      if cat && !cat.finished?
-        cat
-      else
-        nil
-      end
     end
   end
 end

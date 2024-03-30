@@ -11,15 +11,13 @@ RSpec.describe "Dev::Pings", type: :request do
     end
 
     it "returns { message: 'pong', authorized: false }" do
-      json = JSON.parse(response.body)
-      expect(json).to eq({ "message" => "pong", "authorized" => false })
+      expect(response_body).to eq({ "message" => "pong", "authorized" => false })
     end
 
     it "headerにdata-access-keyを含めると、authorizedがtrueになる" do
       access_key = ENV["ACCESS_KEY"]
       get '/dev/ping', headers: { 'data-access-key' => access_key }
-      json = JSON.parse(response.body)
-      expect(json).to eq({ "message" => "pong", "authorized" => true })
+      expect(response_body).to eq({ "message" => "pong", "authorized" => true })
     end
   end
 end

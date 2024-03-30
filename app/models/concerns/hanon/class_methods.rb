@@ -6,10 +6,10 @@ module Hanon::ClassMethods
   SCALES = %w(C C# D D# E F F# G G# A A# B).map { |s| %w(m M).map { |t| "#{s}#{t}" } }.flatten
 
   class_methods do
-    def create_and_start!(num, pattern)
+    def create_and_start!(**params)
       hanon = create!(
-        num: num,
-        pattern: pattern,
+        num: params[:num],
+        pattern: params[:pattern],
         life: Life.today,
       )
       hanon.create_timer
@@ -36,15 +36,6 @@ module Hanon::ClassMethods
       end
 
       res
-    end
-
-    def in_progress
-      hanon = Hanon.last
-      if hanon && !hanon.timer.finished?
-        hanon
-      else
-        nil
-      end
     end
   end
 end

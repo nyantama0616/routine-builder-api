@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "returns basic response" do
+RSpec.shared_examples "returns hanons basic response" do
   it "returns 200" do
     expect(response).to have_http_status(200)
   end
@@ -10,21 +10,14 @@ RSpec.shared_examples "returns basic response" do
     expect(response_body["hanon"]).to eq hanon.info.as_json
   end
 
-  it "returns timer info" do
-    hanon = Hanon.last
-    expect(response_body["timer"]).to eq hanon.timer.info.as_json
-  end
-
-  it "todayLifeが返ってくる" do
-    expect(response_body["todayLife"]).to eq Life.today.info.as_json
-  end
+  it_behaves_like "timerable request", Hanon
 end
 
 RSpec.describe "Hanons", type: :request do
   describe "GET /hanons" do
     before do
       Life.create_and_start
-      @hanon = Hanon.create_and_start!(1, "1:CM")
+      @hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
       get "/hanons"
     end
     
@@ -33,18 +26,18 @@ RSpec.describe "Hanons", type: :request do
     end
 
     it "returns hanon in progress" do
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress["hanon"]["pattern"]).to eq @hanon.pattern
       expect(in_progress["timer"]["isRunning"]).to be true
 
       @hanon.finish
       get "/hanons"
-      in_progress = JSON.parse(response.body)["inProgress"]
+      in_progress = response_body["inProgress"]
       expect(in_progress).to be_nil
     end
 
     it "returns all patterns" do
-      patterns = JSON.parse(response.body)["patterns"]
+      patterns = response_body["patterns"]
       expect(patterns).to eq Hanon.all_patterns.stringify_keys
     end
   end
@@ -55,7 +48,7 @@ RSpec.describe "Hanons", type: :request do
       post "/hanons/start", params: { num: 1, pattern: "1:CM" }, headers: headers_with_access_key
     end
 
-    it_behaves_like "returns basic response"
+    it_behaves_like "returns hanons basic response"
 
     it "Occur error if last hanon has not finished" do
       post "/hanons/start", params: { num: 1, pattern: "1:CM" }, headers: headers_with_access_key
@@ -95,7 +88,7 @@ RSpec.describe "Hanons", type: :request do
       post "/hanons/stop", headers: headers_with_access_key
     end
 
-    it_behaves_like "returns basic response"
+    it_behaves_like "returns hanons basic response"
 
     it "returns 400 if hanon has not started" do
       post "/hanons/stop", headers: headers_with_access_key
@@ -116,7 +109,7 @@ RSpec.describe "Hanons", type: :request do
       post "/hanons/finish", headers: headers_with_access_key
     end
 
-    it_behaves_like "returns basic response"
+    it_behaves_like "returns hanons basic response"
 
     it "returns 400 if hanon has not started" do
       post "/hanons/finish", headers: headers_with_access_key

@@ -14,6 +14,7 @@ class Life < ApplicationRecord
   has_many :caterpillars, dependent: :destroy
   has_many :hiits, dependent: :destroy
   has_many :hanons, dependent: :destroy
+  has_many :tooths, dependent: :destroy
 
   def start
     raise 'already finished' if finished?
@@ -55,6 +56,8 @@ class Life < ApplicationRecord
       Status::Caterpillar
     elsif (hanon = hanons.last) && hanon.timer.running?
       Status::Hanon
+    elsif (tooth = tooths.last) && tooth.timer.running?
+      Status::Tooth
     else
       Status::None
     end

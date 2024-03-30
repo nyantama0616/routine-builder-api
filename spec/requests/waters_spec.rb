@@ -13,8 +13,7 @@ RSpec.describe "Waters", type: :request do
 
     it "returns water amount" do
       life = Life.today
-      amount = JSON.parse(response.body)["amount"]
-      expect(amount).to eq life.water_info.stringify_keys
+      expect(response_body["amount"]).to eq life.water_info.stringify_keys
     end
   end
 
@@ -30,8 +29,7 @@ RSpec.describe "Waters", type: :request do
 
     it "returns water amount" do
       life = Life.today
-      amount = JSON.parse(response.body)["amount"]
-      expect(amount).to eq life.water_info.stringify_keys
+      expect(response_body["amount"]).to eq life.water_info.stringify_keys
     end
 
     it "increases water amount" do
