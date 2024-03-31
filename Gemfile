@@ -37,6 +37,7 @@ gem "bootsnap", require: false
 # gem "rack-cors"
 
 gem 'dotenv-rails', '~> 2.6'
+gem 'timecop', '~> 0.9.8'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -46,8 +47,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0.0'
   gem 'spring-commands-rspec'
   gem 'factory_bot_rails', '~> 6.2.0'
-  gem 'timecop', '~> 0.9.8'
-  gem "spring"
 end
 
 group :development do
