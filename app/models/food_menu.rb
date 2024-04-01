@@ -13,4 +13,12 @@ class FoodMenu < ApplicationRecord
       }
     end
   end
+
+  def info
+    {
+      id: id,
+      name: name,
+      foods: foods_with_quantity
+    }
+  end
 end

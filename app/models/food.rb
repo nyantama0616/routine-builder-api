@@ -11,6 +11,7 @@ class Food < ApplicationRecord
 
   def info
     {
+      id: id,
       name: name,
       abb_name: abb_name,
       price: price
