@@ -71,9 +71,18 @@ RSpec.describe FoodMenu, type: :model do
       expect(@food_menu.foods).not_to include(@food)
     end
 
-    it "update_food_quantity" do
-      @food_menu.update_food_quantity(@food.id, 5)
-      expect(@food_menu.food_menu_items.find_by(food_id: @food.id).quantity).to eq(5)
+    it "create_menu!" do
+      foods = create_list(:food, 3)
+      food_menu = FoodMenu.create_menu!(name: "menu1", foods: foods.map { |food| {id: food.id, quantity: 1} })
+      expect(food_menu.name).to eq "menu1"
+      expect(food_menu.foods.length).to eq 3
+    end
+
+    it "update_menu!" do
+      foods = create_list(:food, 3)
+      @food_menu.update_menu!(name: "menu2", foods: foods.map { |food| {id: food.id, quantity: 1} })
+      expect(@food_menu.name).to eq "menu2"
+      expect(@food_menu.foods).to eq foods
     end
   end
 end
