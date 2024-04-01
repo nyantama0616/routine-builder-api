@@ -34,4 +34,8 @@ Rails.application.routes.draw do
   post "/tooths/start", to: "tooths#start"
   post "/tooths/stop", to: "tooths#stop"
   post "/tooths/finish", to: "tooths#finish"
+
+  #foods
+  get "/foods", to: "foods#index"
+  post "/foods", to: "foods#create"
 end
