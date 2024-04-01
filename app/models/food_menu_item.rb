@@ -7,4 +7,8 @@ class FoodMenuItem < ApplicationRecord
     validates :food_menu
     validates :quantity
   end
+
+  validates :quantity, numericality: { greater_than: 0 }
+
+  validates_uniqueness_of :food_id, scope: :food_menu_id
 end
