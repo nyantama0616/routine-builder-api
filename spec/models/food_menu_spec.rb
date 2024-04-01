@@ -56,6 +56,10 @@ RSpec.describe FoodMenu, type: :model do
       expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.foods_with_quantity})
     end
 
+    it "info(only: %i(id name)) returns {id, name}" do
+      expect(@food_menu.info(only: %i(id name))).to eq({id: @food_menu.id, name: @food_menu.name})
+    end
+
     it "add_food" do
       food = create(:food)
       @food_menu.add_food(food.id, 2)

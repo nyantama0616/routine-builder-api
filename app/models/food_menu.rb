@@ -38,11 +38,12 @@ class FoodMenu < ApplicationRecord
     end
   end
 
-  def info
-    {
+  def info(only: %i(id name foods))
+    res = {
       id: id,
       name: name,
       foods: foods_with_quantity
     }
+    res.slice(*only)
   end
 end
