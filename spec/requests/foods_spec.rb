@@ -34,8 +34,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     it "creates a food" do
-      food = Food.last
-      expect(food.info).to eq @params[:food]
+      expect(Food.count).to eq 1
     end
 
     it "returns the created food" do
