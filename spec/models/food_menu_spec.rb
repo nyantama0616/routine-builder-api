@@ -55,5 +55,21 @@ RSpec.describe FoodMenu, type: :model do
     it "info returns {id, name, foods}" do
       expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.foods_with_quantity})
     end
+
+    it "add_food" do
+      food = create(:food)
+      @food_menu.add_food(food.id, 2)
+      expect(@food_menu.foods_with_quantity).to include({food: food.info, quantity: 2})
+    end
+
+    it "remove_food" do
+      @food_menu.remove_food(@food.id)
+      expect(@food_menu.foods).not_to include(@food)
+    end
+
+    it "update_food_quantity" do
+      @food_menu.update_food_quantity(@food.id, 5)
+      expect(@food_menu.food_menu_items.find_by(food_id: @food.id).quantity).to eq(5)
+    end
   end
 end
