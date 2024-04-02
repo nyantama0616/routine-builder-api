@@ -21,6 +21,16 @@ RSpec.describe Food, type: :model do
       @food.valid?
       expect(@food.errors[:price]).to include("can't be blank")
     end
+
+    it "price must be greater than 0" do
+      @food.price = 0
+      @food.valid?
+      expect(@food.errors[:price]).to include("must be greater than 0")
+
+      @food.price = 0.5
+      @food.valid?
+      expect(@food).to be_valid
+    end
   end
 
   describe "methods" do

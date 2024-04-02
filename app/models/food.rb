@@ -7,7 +7,7 @@ class Food < ApplicationRecord
   has_many :food_menus, through: :food_menu_items
 
   validates :name, presence: true
-  validates :price, presence: true
+  validates :price, presence: true, numericality: { greater_than: 0 }
 
   def info(only: %i(id name abb_name price))
     hash = {
