@@ -1,5 +1,5 @@
 class FoodsController < ApplicationController
-  before_action :reject_if_unauthorized!, only: [:create]
+  before_action :reject_if_unauthorized!, only: [:create, :update]
 
   def index
     foods = Food.all
@@ -10,6 +10,21 @@ class FoodsController < ApplicationController
     food = Food.new(create_params)
 
     if food.save
+      render json: { food: food.info }
+    else
+      render json: { errors: food.errors.full_messages }, status: :bad_request
+    end
+  end
+
+  def update
+    food = Food.find_by(id: params[:id])
+
+    unless food
+      render json: { errors: ["food not found"] }, status: :not_found
+      return
+    end
+      
+    if food.update(create_params)
       render json: { food: food.info }
     else
       render json: { errors: food.errors.full_messages }, status: :bad_request

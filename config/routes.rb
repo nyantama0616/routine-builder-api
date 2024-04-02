@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   #foods
   get "/foods", to: "foods#index"
   post "/foods", to: "foods#create"
+  patch "/foods/:id", to: "foods#update"
 
   #food_menus
   get "/food_menus", to: "food_menus#index"

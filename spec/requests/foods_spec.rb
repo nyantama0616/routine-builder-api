@@ -52,4 +52,47 @@ RSpec.describe "Foods", type: :request do
       expect(response).to have_http_status(401)
     end
   end
+
+  describe "PATCH /foods/:id" do
+    before do
+      @food = create(:food)
+      @params = {
+        food: {
+          name: "food100",
+          abb_name: "foodX",
+          price: 1000,
+        }
+      }
+      patch "/foods/#{@food[:id]}", params: @params, headers: headers_with_access_key
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "updates the food" do
+      info = Food.find(@food[:id]).info only: %i(name abb_name price)
+      expect(info).to eq @params[:food]
+    end
+
+    it "returns the updated food" do
+      expect(response_body["food"]).to eq @food.reload.info.stringify_keys
+    end
+
+    it "returns 400 if params is invalid" do
+      @params[:food][:name] = nil
+      patch "/foods/#{@food[:id]}", params: @params, headers: headers_with_access_key
+      expect(response).to have_http_status(400)
+    end
+
+    it "returns 404 if food not found" do
+      patch "/foods/0", params: @params, headers: headers_with_access_key
+      expect(response).to have_http_status(404)
+    end
+
+    it "access-keyなしでアクセスすると401を返す" do
+      patch "/foods/0", params: @params
+      expect(response).to have_http_status(401)
+    end
+  end
 end
