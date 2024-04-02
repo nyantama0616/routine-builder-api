@@ -38,8 +38,8 @@ RSpec.describe Food, type: :model do
       @food = create(:food)
     end
 
-    it "returns {id, name, abb_name, price}" do
-      expect(@food.info).to eq({id: @food.id, name: @food.name, abb_name: @food.abb_name, price: @food.price})
+    it "returns {id, name, abbName, price}" do
+      expect(@food.info).to eq({id: @food.id, name: @food.name, abbName: @food.abb_name, price: @food.price})
     end
   end
 end

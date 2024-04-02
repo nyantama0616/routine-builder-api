@@ -22,7 +22,7 @@ RSpec.describe "Foods", type: :request do
       @params = {
         food: {
           name: "food0",
-          abb_name: "food",
+          abbName: "food",
           price: 100,
         }
       }
@@ -59,7 +59,7 @@ RSpec.describe "Foods", type: :request do
       @params = {
         food: {
           name: "food100",
-          abb_name: "foodX",
+          abbName: "foodX",
           price: 1000,
         }
       }
@@ -71,7 +71,7 @@ RSpec.describe "Foods", type: :request do
     end
 
     it "updates the food" do
-      info = Food.find(@food[:id]).info only: %i(name abb_name price)
+      info = Food.find(@food[:id]).info only: %i(name abbName price)
       expect(info).to eq @params[:food]
     end
 

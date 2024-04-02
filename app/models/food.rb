@@ -9,11 +9,11 @@ class Food < ApplicationRecord
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
 
-  def info(only: %i(id name abb_name price))
+  def info(only: %i(id name abbName price))
     hash = {
       id: id,
       name: name,
-      abb_name: abb_name,
+      abbName: abb_name,
       price: price
     }
     hash.slice(*only)

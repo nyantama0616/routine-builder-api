@@ -8,8 +8,10 @@ class FoodsController < ApplicationController
 
   def create
     food = Food.new(create_params)
+    logger.debug create_params
 
     if food.save
+      logger.debug food.info
       render json: { food: food.info }
     else
       render json: { errors: food.errors.full_messages }, status: :bad_request
@@ -24,7 +26,7 @@ class FoodsController < ApplicationController
       return
     end
       
-    if food.update(create_params)
+    if food.update(update_params)
       render json: { food: food.info }
     else
       render json: { errors: food.errors.full_messages }, status: :bad_request
@@ -34,6 +36,10 @@ class FoodsController < ApplicationController
   private
 
   def create_params
-    params.require(:food).permit(:name, :abb_name, :price)
+    hash = params.require(:food).permit(:name, :abbName, :price)
+    hash[:abb_name] = hash.delete(:abbName)
+    hash
   end
+
+  alias update_params create_params
 end
