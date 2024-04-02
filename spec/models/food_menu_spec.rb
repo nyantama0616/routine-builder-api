@@ -48,12 +48,12 @@ RSpec.describe FoodMenu, type: :model do
       @food_menu_item = create(:food_menu_item, food_menu: @food_menu, food: @food, quantity: 3)
     end
 
-    it "foods_with_quantity" do
-      expect(@food_menu.foods_with_quantity).to include({food: @food.info, quantity: 3})
+    it "food_ids_with_quantity" do
+      expect(@food_menu.food_ids_with_quantity).to include({foodId: @food.id, quantity: 3})
     end
 
     it "info returns {id, name, foods}" do
-      expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.foods_with_quantity})
+      expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.food_ids_with_quantity})
     end
 
     it "info(only: %i(id name)) returns {id, name}" do
@@ -63,7 +63,7 @@ RSpec.describe FoodMenu, type: :model do
     it "add_food" do
       food = create(:food)
       @food_menu.add_food(food.id, 2)
-      expect(@food_menu.foods_with_quantity).to include({food: food.info, quantity: 2})
+      expect(@food_menu.food_ids_with_quantity).to include({foodId: food.id, quantity: 2})
     end
 
     it "remove_food" do

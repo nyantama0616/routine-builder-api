@@ -7,10 +7,10 @@ class FoodMenu < ApplicationRecord
   has_many :foods, through: :food_menu_items
   validates :name, presence: true
 
-  def foods_with_quantity
+  def food_ids_with_quantity
     food_menu_items.map do |food_menu_item|
       {
-        food: food_menu_item.food.info,
+        foodId: food_menu_item.food_id,
         quantity: food_menu_item.quantity
       }
     end
@@ -46,7 +46,7 @@ class FoodMenu < ApplicationRecord
     res = {
       id: id,
       name: name,
-      foods: foods_with_quantity
+      foods: food_ids_with_quantity
     }
     res.slice(*only)
   end
