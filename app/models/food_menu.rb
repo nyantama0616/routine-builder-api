@@ -16,6 +16,15 @@ class FoodMenu < ApplicationRecord
     end
   end
 
+  def foods_with_quantity
+    food_menu_items.map do |food_menu_item|
+      {
+        food: food_menu_item.food,
+        quantity: food_menu_item.quantity
+      }
+    end
+  end
+
   # TODO: エラーハンドリングするべきか？
   def add_food(food_id, quantity)
     if food = Food.find_by(id: food_id)
@@ -43,11 +52,11 @@ class FoodMenu < ApplicationRecord
   end
 
   def info(only: %i(id name foods))
-    res = {
-      id: id,
-      name: name,
-      foods: food_ids_with_quantity
-    }
-    res.slice(*only)
+    res = {}
+    res[:id] = id if only.include?(:id)
+    res[:name] = name if only.include?(:name)
+    res[:foods] = foods_with_quantity if only.include?(:foods)
+    res[:foodIds] = food_ids_with_quantity if only.include?(:foodIds)
+    res
   end
 end
