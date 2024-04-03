@@ -18,7 +18,30 @@ RSpec.describe "FoodMenus", type: :request do
 
     it "returns food_menus" do
       food_menu = response_body["foodMenus"][0]
-      expect(food_menu).to eq @food_menu.info.deep_stringify_keys
+      expect(food_menu).to eq @food_menu.info(only: %i(id name)).deep_stringify_keys
+    end
+  end
+
+  describe "GET /food_menus/:id" do
+    before do
+      @foods = create_list(:food, 3)
+      @food_menu = FoodMenu.create_menu!(name: "menu0", foods: @foods.map { |food| {id: food.id, quantity: 1} })
+      
+      get "/food_menus/#{@food_menu[:id]}"
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns the food menu" do
+      food_menu_json = response_body["foodMenu"]
+      expect(food_menu_json).to eq @food_menu.info.deep_stringify_keys
+    end
+
+    it "returns 404 if food menu not found" do
+      get "/food_menus/0"
+      expect(response).to have_http_status(404)
     end
   end
 

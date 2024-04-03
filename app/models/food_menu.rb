@@ -19,7 +19,7 @@ class FoodMenu < ApplicationRecord
   def foods_with_quantity
     food_menu_items.map do |food_menu_item|
       {
-        food: food_menu_item.food,
+        food: food_menu_item.food.info,
         quantity: food_menu_item.quantity
       }
     end
