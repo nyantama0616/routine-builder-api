@@ -2,7 +2,7 @@ class FoodMenusController < ApplicationController
   before_action :reject_if_unauthorized!, only: %i(create update)
 
   def index
-    @food_menus = FoodMenu.all.map { |food_menu| food_menu.info(only: %i(id name)) }
+    @food_menus = FoodMenu.all.map(&:info)
     render json: { foodMenus: @food_menus }
   end
 
