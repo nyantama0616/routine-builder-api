@@ -1,5 +1,5 @@
 class FoodMenusController < ApplicationController
-  before_action :reject_if_unauthorized!, only: %i(create update)
+  before_action :reject_if_unauthorized!, only: %i(create update destroy)
 
   def index
     @food_menus = FoodMenu.all.map(&:info)
@@ -20,6 +20,15 @@ class FoodMenusController < ApplicationController
       render json: { foodMenu: food_menu.info}
     rescue => e
       render json: { errors: [e.message] }, status: 400
+    end
+  end
+
+  def destroy
+    if food_menu = FoodMenu.find_by(id: params[:id])
+      food_menu.destroy
+      head :ok
+    else
+      render json: { errors: ["FoodMenu not found"] }, status: 404
     end
   end
 

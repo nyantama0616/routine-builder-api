@@ -128,4 +128,27 @@ RSpec.describe "FoodMenus", type: :request do
       expect(response).to have_http_status(401)
     end
   end
+
+  describe "POST /food_menus/:id/delete" do
+    before do
+      @foods = create_list(:food, 3)
+      @food_menu = FoodMenu.create_menu!(name: "menu0", foods: @foods.map { |food| {id: food.id, quantity: 1} })
+      
+      delete "/food_menus/#{@food_menu[:id]}", headers: headers_with_access_key
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "deletes the food menu" do
+      expect(FoodMenu.find_by(id: @food_menu[:id])).to be_nil
+    end
+
+    it "access-key is required" do
+      food_menu = FoodMenu.create_menu!(name: "menu0", foods: @foods.map { |food| {id: food.id, quantity: 1} })
+      delete "/food_menus/#{food_menu[:id]}"
+      expect(response).to have_http_status(401)
+    end
+  end
 end
