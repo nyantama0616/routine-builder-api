@@ -51,12 +51,19 @@ class FoodMenu < ApplicationRecord
     end
   end
 
-  def info(only: %i(id name foods))
+  def price
+    food_menu_items.inject(0) do |sum, item|
+      sum + item.food.price * item.quantity
+    end
+  end
+
+  def info(only: %i(id name foods price))
     res = {}
     res[:id] = id if only.include?(:id)
     res[:name] = name if only.include?(:name)
     res[:foods] = foods_with_quantity if only.include?(:foods)
     res[:foodIds] = food_ids_with_quantity if only.include?(:foodIds)
+    res[:price] = price if only.include?(:price)
     res
   end
 end

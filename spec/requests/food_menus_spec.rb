@@ -18,7 +18,7 @@ RSpec.describe "FoodMenus", type: :request do
 
     it "returns food_menus" do
       food_menu = response_body["foodMenus"][0]
-      expect(food_menu).to eq @food_menu.info(only: %i(id name foods)).deep_stringify_keys
+      expect(food_menu).to eq @food_menu.info(only: %i(id name foods price)).deep_stringify_keys
     end
   end
 

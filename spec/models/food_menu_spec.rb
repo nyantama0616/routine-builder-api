@@ -84,5 +84,12 @@ RSpec.describe FoodMenu, type: :model do
       expect(@food_menu.name).to eq "menu2"
       expect(@food_menu.foods).to eq foods
     end
+
+    it "price" do
+      food0 = create(:food, price: 100)
+      food1 = create(:food, price: 1.5)
+      food_menu = FoodMenu.create_menu! name: "menu1", foods: [{id: food0.id, quantity: 2}, {id: food1.id, quantity: 10}]
+      expect(food_menu.price).to eq 2*100 + 10*1.5
+    end
   end
 end
