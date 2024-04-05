@@ -28,3 +28,18 @@ hanon3_5DSharpm.finish
 hanon1_3Cm = Hanon.create_and_start! num: 1, pattern: "1:Cm"
 Timecop.freeze(15.minute.from_now)
 hanon1_3Cm.finish
+
+# Food
+potate = Food.create! name: "北海道産じゃがいも", abb_name: "じゃがいも", price: 100
+onion = Food.create! name: "国産玉ねぎ", abb_name: "玉ねぎ", price: 50
+meron = Food.create! name: "国産メロン", abb_name: "メロン", price: 300
+carrote = Food.create! name: "国産にんじん", abb_name: "にんじん", price: 120
+chicken = Food.create! name: "国産鶏もも肉", abb_name: "鶏もも肉", price: 0.8
+pine = Food.create! name: "国産パイナップル", abb_name: "パイナップル", price: 200
+
+# FoodMenu
+oyakodon = FoodMenu.create! name: "親子丼"
+oyakodon.add_food(potate.id, 2)
+oyakodon.add_food(onion.id, 0.5)
+oyakodon.add_food(carrote.id, 1)
+oyakodon.add_food(chicken.id, 150)
