@@ -3,11 +3,12 @@ module Hiit::ClassMethods
 
   class_methods do
     #行うラウンド数を渡す
-    def create_and_start!(params)
+    # TODO: started?チェックしないとね。
+    def create_and_start!(work_time: Hiit.work_time, break_time: Hiit.break_time)
       Hiit.create!(
-        round_count: params[:round_count],
-        work_time: params[:work_time] || Hiit.work_time,
-        break_time: params[:break_time] || Hiit.break_time, 
+        round_count: 0,
+        work_time: work_time,
+        break_time: break_time, 
         life: Life.today
       )
     end

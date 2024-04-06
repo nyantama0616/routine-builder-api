@@ -74,7 +74,7 @@ RSpec.describe Hiit, type: :model do
       create(:life)
       Hiit.work_time = 30
       Hiit.break_time = 10
-      @train = Hiit.create_and_start!({round_count: 1, work_time: 2, break_time: 3})
+      @train = Hiit.create_and_start! work_time: 2, break_time: 3
     end
 
     it "新しいTrainが作成される" do
@@ -82,13 +82,13 @@ RSpec.describe Hiit, type: :model do
     end
 
     it "引数に渡したラウンド数が記録される" do
-      expect(@train.round_count).to eq 1  
+      expect(@train.round_count).to eq 0
       expect(@train.work_time).to eq 2
       expect(@train.break_time).to eq 3
     end
 
     it "work_time, break_timeを省略した場合は、設定値が使われる" do
-      train = Hiit.create_and_start!({round_count: 1})
+      train = Hiit.create_and_start!
       expect(train.work_time).to eq 30
       expect(train.break_time).to eq 10
     end
@@ -107,7 +107,7 @@ RSpec.describe Hiit, type: :model do
       create(:life)
       Hiit.work_time = 30
       Hiit.break_time = 10
-      @train = Hiit.create_and_start!({round_count: 5})
+      @train = Hiit.create_and_start!
     end
 
     it "info()で{workTime, breakTime, roundCount, startedAt, finishedAt}が取得できる" do
@@ -115,13 +115,13 @@ RSpec.describe Hiit, type: :model do
     end
 
     it "finish()でfinished_atが記録される" do
-      @train.finish
+      @train.finish 5
       expect(@train.finished_at).not_to be_nil
     end
 
     it "finish()を2回実行するとエラーが発生する" do
-      @train.finish
-      expect{ @train.finish }.to raise_error(RuntimeError)
+      @train.finish 5
+      expect{ @train.finish 5 }.to raise_error(RuntimeError)
     end
   end
 end

@@ -26,9 +26,9 @@ class Hiit < ApplicationRecord
     }
   end
 
-  def finish
+  def finish(round_count)
     raise "already finished" if finished_at.present?
-    update!(finished_at: Time.current)
+    update!(finished_at: Time.current, round_count: round_count)
   end
 
   def finished?
