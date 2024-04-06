@@ -52,8 +52,8 @@ RSpec.describe FoodMenu, type: :model do
       expect(@food_menu.food_ids_with_quantity).to include({foodId: @food.id, quantity: 3})
     end
 
-    it "info returns {id, name, foods}" do
-      expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.foods_with_quantity})
+    it "info returns {id, name, foods, price}" do
+      expect(@food_menu.info).to eq({id: @food_menu.id, name: @food_menu.name, foods: @food_menu.foods_with_quantity, price: @food_menu.price})
     end
 
     it "info(only: %i(id name)) returns {id, name}" do
