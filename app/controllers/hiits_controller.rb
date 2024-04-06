@@ -9,7 +9,7 @@ class HiitsController < ApplicationController
     begin
       hiit = Hiit.create_and_start!(**start_params)
       
-      render json: { hiit: hiit.info }
+      render json: { hiit: hiit.info, todayLife: Life.today.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
@@ -20,7 +20,7 @@ class HiitsController < ApplicationController
 
     begin
       hiit.finish finish_params[:round_count]
-      render json: { hiit: hiit.info }
+      render json: { hiit: hiit.info, todayLife: Life.today.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end

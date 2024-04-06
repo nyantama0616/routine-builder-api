@@ -49,6 +49,11 @@ RSpec.describe "Hiits", type: :request do
       expect(response_body["hiit"]["startedAt"]).to be_present
     end
 
+    it "returns today life info" do
+      life = Life.last
+      expect(response_body["todayLife"]).to be_present
+    end
+
     it "access-keyなしだとエラーになる" do
       post "/hiits/start", params: { workTime: 2, breakTime: 3 }
       expect(response).to have_http_status(401)
@@ -81,6 +86,11 @@ RSpec.describe "Hiits", type: :request do
       expect(response_body["hiit"].except("startedAt", "finishedAt")).to eq hiit.info.stringify_keys.except("startedAt", "finishedAt")
       expect(response_body["hiit"]["startedAt"]).to be_present
       expect(response_body["hiit"]["finishedAt"]).to be_present
+    end
+
+    it "returns today life info" do
+      life = Life.last
+      expect(response_body["todayLife"]).to be_present
     end
 
     it "access-keyなしだとエラーになる" do
