@@ -117,6 +117,14 @@ RSpec.describe Life, type: :model do
       tooth.finish
       expect(@life.status).to eq Life::Status::None
     end
+
+    it "status is Hiit When Hiit" do
+      hiit = Hiit.create_and_start! work_time: 30, break_time: 30
+      expect(@life.status).to eq Life::Status::Hiit
+
+      hiit.finish 1
+      expect(@life.status).to eq Life::Status::None
+    end
   end
 
   describe "other method" do

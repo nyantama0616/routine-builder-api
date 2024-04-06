@@ -26,7 +26,8 @@ Rails.application.routes.draw do
 
   #Hiit
   get "/hiits", to: "hiits#index"
-  post "/hiits", to: "hiits#create"
+  post "/hiits/start", to: "hiits#start"
+  post "/hiits/finish", to: "hiits#finish"
   patch "/hiits/setting", to: "hiits#setting"
 
   #tooths
@@ -34,4 +35,16 @@ Rails.application.routes.draw do
   post "/tooths/start", to: "tooths#start"
   post "/tooths/stop", to: "tooths#stop"
   post "/tooths/finish", to: "tooths#finish"
+
+  #foods
+  get "/foods", to: "foods#index"
+  post "/foods", to: "foods#create"
+  patch "/foods/:id", to: "foods#update"
+
+  #food_menus
+  get "/food_menus", to: "food_menus#index"
+  get "/food_menus/:id", to: "food_menus#show"
+  post "/food_menus", to: "food_menus#create"
+  patch "/food_menus/:id", to: "food_menus#update"
+  delete "/food_menus/:id", to: "food_menus#destroy"
 end

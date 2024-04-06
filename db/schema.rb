@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_30_100848) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_06_074546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,30 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_100848) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["life_id"], name: "index_caterpillars_on_life_id"
+  end
+
+  create_table "food_menu_items", force: :cascade do |t|
+    t.bigint "food_menu_id", null: false
+    t.bigint "food_id", null: false
+    t.float "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["food_id"], name: "index_food_menu_items_on_food_id"
+    t.index ["food_menu_id"], name: "index_food_menu_items_on_food_menu_id"
+  end
+
+  create_table "food_menus", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "foods", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "abb_name"
+    t.float "price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "hanons", force: :cascade do |t|
@@ -38,6 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_100848) do
     t.integer "round_count", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "finished_at"
     t.index ["life_id"], name: "index_hiits_on_life_id"
   end
 
@@ -79,6 +104,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_100848) do
   end
 
   add_foreign_key "caterpillars", "lives"
+  add_foreign_key "food_menu_items", "food_menus"
+  add_foreign_key "food_menu_items", "foods"
   add_foreign_key "hanons", "lives"
   add_foreign_key "hiits", "lives"
   add_foreign_key "sleeps", "lives"

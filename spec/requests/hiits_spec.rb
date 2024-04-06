@@ -4,7 +4,6 @@ RSpec.describe "Hiits", type: :request do
   describe "GET /hiits" do
     before do
       Life.create_and_start
-      Hiit.create_train!({ round_count: 1, work_time: 2, break_time: 3})
       Hiit.update_setting!({ work_time: 10, break_time: 20, round_count: 30 })
       get "/hiits"
     end
@@ -18,10 +17,10 @@ RSpec.describe "Hiits", type: :request do
     end
   end
 
-  describe "POST /hiits" do
+  describe "POST /hiits/start" do
     before do
       Life.create_and_start
-      post "/hiits", params: { hiit: { roundCount: 1, workTime: 2, breakTime: 3 } }, headers: headers_with_access_key
+      post "/hiits/start", params: { workTime: 2, breakTime: 3 }, headers: headers_with_access_key
     end
 
     it "returns 200" do
@@ -30,7 +29,7 @@ RSpec.describe "Hiits", type: :request do
 
     it "round_count is set" do
       hiit = Hiit.last
-      expect(hiit.round_count).to eq 1
+      expect(hiit.round_count).to eq 0
     end
 
     it "work_time is set" do
@@ -46,11 +45,56 @@ RSpec.describe "Hiits", type: :request do
     it "returns hiit info" do
       hiit = Hiit.last
       
-      expect(response_body["hiit"]).to eq hiit.info.stringify_keys
+      expect(response_body["hiit"].except("startedAt")).to eq hiit.info.stringify_keys.except("startedAt")
+      expect(response_body["hiit"]["startedAt"]).to be_present
+    end
+
+    it "returns today life info" do
+      life = Life.last
+      expect(response_body["todayLife"]).to be_present
     end
 
     it "access-keyなしだとエラーになる" do
-      post "/hiits", params: { hiit: { roundCount: 1, workTime: 2, breakTime: 3 } }
+      post "/hiits/start", params: { workTime: 2, breakTime: 3 }
+      expect(response).to have_http_status(401)
+    end
+  end
+
+  describe "POST /hiits/finish" do
+    before do
+      Life.create_and_start
+      Hiit.create_and_start!
+      post "/hiits/finish", params: { roundCount: 10 }, headers: headers_with_access_key
+    end
+
+    it "returns 200" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "hiit is finished" do
+      hiit = Hiit.last
+      expect(hiit.finished?).to be_truthy
+    end
+
+    it "round_count is set" do
+      hiit = Hiit.last
+      expect(hiit.round_count).to eq 10
+    end
+
+    it "returns hiit info" do
+      hiit = Hiit.last
+      expect(response_body["hiit"].except("startedAt", "finishedAt")).to eq hiit.info.stringify_keys.except("startedAt", "finishedAt")
+      expect(response_body["hiit"]["startedAt"]).to be_present
+      expect(response_body["hiit"]["finishedAt"]).to be_present
+    end
+
+    it "returns today life info" do
+      life = Life.last
+      expect(response_body["todayLife"]).to be_present
+    end
+
+    it "access-keyなしだとエラーになる" do
+      post "/hiits/finish"
       expect(response).to have_http_status(401)
     end
   end

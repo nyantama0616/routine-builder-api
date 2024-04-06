@@ -5,5 +5,5 @@ module Life::Status
   Caterpillar = "caterpillar"
   Hanon = "hanon"
   Tooth = "tooth"
-  # Hiit = "hiit" //Hiitはタイマーとかないから、Stateなし
+  Hiit = "hiit"
 end
