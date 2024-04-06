@@ -58,6 +58,8 @@ class Life < ApplicationRecord
       Status::Hanon
     elsif (tooth = tooths.last) && tooth.timer.running?
       Status::Tooth
+    elsif (hiit = hiits.last) && !hiit.finished?
+      Status::Hiit
     else
       Status::None
     end
