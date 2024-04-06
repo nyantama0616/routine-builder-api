@@ -1,14 +1,25 @@
 class HiitsController < ApplicationController
-  before_action :reject_if_unauthorized!, only: [:create, :setting]
+  before_action :reject_if_unauthorized!, only: [:start, :finish, :setting]
 
   def index
     render json: { hiitSetting: Hiit.setting_info }
   end
   
-  def create  
+  def start  
     begin
-      hiit = Hiit.create_train!(hiit_params)
+      hiit = Hiit.create_and_start!(start_params)
       
+      render json: { hiit: hiit.info }
+    rescue => exception
+      render json: { errors: [exception.message] }, status: :bad_request
+    end
+  end
+
+  def finish
+    hiit = Hiit.last
+
+    begin
+      hiit.finish
       render json: { hiit: hiit.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
@@ -27,7 +38,7 @@ class HiitsController < ApplicationController
 
   private
 
-  def hiit_params
+  def start_params
     hash = params.require(:hiit).permit(:roundCount, :workTime, :breakTime)
     hash[:round_count] = hash.delete(:roundCount).to_i
     hash[:work_time] = hash.delete(:workTime).to_i

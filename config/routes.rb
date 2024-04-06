@@ -26,7 +26,8 @@ Rails.application.routes.draw do
 
   #Hiit
   get "/hiits", to: "hiits#index"
-  post "/hiits", to: "hiits#create"
+  post "/hiits/start", to: "hiits#start"
+  post "/hiits/finish", to: "hiits#finish"
   patch "/hiits/setting", to: "hiits#setting"
 
   #tooths

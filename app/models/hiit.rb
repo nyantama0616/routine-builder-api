@@ -30,4 +30,8 @@ class Hiit < ApplicationRecord
     raise "already finished" if finished_at.present?
     update!(finished_at: Time.current)
   end
+
+  def finished?
+    finished_at.present?
+  end
 end
