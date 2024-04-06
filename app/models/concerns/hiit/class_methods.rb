@@ -2,8 +2,8 @@ module Hiit::ClassMethods
   extend ActiveSupport::Concern
 
   class_methods do
-     #行ったラウンド数を渡す
-    def create_train!(params)
+    #行うラウンド数を渡す
+    def create_and_start!(params)
       Hiit.create!(
         round_count: params[:round_count],
         work_time: params[:work_time] || Hiit.work_time,
