@@ -7,7 +7,7 @@ class HiitsController < ApplicationController
   
   def start  
     begin
-      hiit = Hiit.create_and_start!(start_params)
+      hiit = Hiit.create_and_start!(**start_params)
       
       render json: { hiit: hiit.info }
     rescue => exception
@@ -19,7 +19,7 @@ class HiitsController < ApplicationController
     hiit = Hiit.last
 
     begin
-      hiit.finish
+      hiit.finish finish_params[:round_count]
       render json: { hiit: hiit.info }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
@@ -39,11 +39,17 @@ class HiitsController < ApplicationController
   private
 
   def start_params
-    hash = params.require(:hiit).permit(:roundCount, :workTime, :breakTime)
-    hash[:round_count] = hash.delete(:roundCount).to_i
+    hash = params.permit(:workTime, :breakTime).to_h.symbolize_keys
     hash[:work_time] = hash.delete(:workTime).to_i
     hash[:break_time] = hash.delete(:breakTime).to_i
     
+    hash.compact
+  end
+
+  def finish_params    
+    hash = params.permit(:roundCount).to_h.symbolize_keys
+    hash[:round_count] = hash.delete(:roundCount).to_i
+
     hash.compact
   end
 
