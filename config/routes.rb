@@ -47,4 +47,7 @@ Rails.application.routes.draw do
   post "/food_menus", to: "food_menus#create"
   patch "/food_menus/:id", to: "food_menus#update"
   delete "/food_menus/:id", to: "food_menus#destroy"
+
+  #lifes
+  get "/lifes/today", to: "lifes#today"
 end
