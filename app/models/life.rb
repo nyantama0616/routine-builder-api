@@ -1,7 +1,11 @@
 # Lifeクラスの寿命は、その日起きてから、次の日起きるまで！
 class Life < ApplicationRecord
   class << self
-    alias :today :last
+    def today
+      # TODO: なぜLife.lastではダメなのか
+      # てか、started_atカラムいらないよな
+      Life.order(:started_at).last
+    end
     
     def create_and_start
       life = create

@@ -14,8 +14,12 @@ RSpec.describe Life, type: :model do
       expect(@life.finished_at).to be_nil  
     end
 
-    it "Life.today returns last record" do
-      create_list(:life, 3)
+    it "Life.today returns latest record" do
+      @life.destroy
+      3.times do
+        Timecop.freeze(1.day.from_now)
+        Life.create_and_start
+      end
       expect(Life.today).to eq Life.last
     end
   end
