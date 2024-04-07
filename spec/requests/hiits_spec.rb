@@ -44,14 +44,12 @@ RSpec.describe "Hiits", type: :request do
 
     it "returns hiit info" do
       hiit = Hiit.last
-      
       expect(response_body["hiit"].except("startedAt")).to eq hiit.info.stringify_keys.except("startedAt")
       expect(response_body["hiit"]["startedAt"]).to be_present
     end
 
-    it "returns today life info" do
-      life = Life.last
-      expect(response_body["todayLife"]).to be_present
+    it "returns status" do
+      expect(response_body["status"]).to eq Life.today.status
     end
 
     it "access-keyなしだとエラーになる" do
@@ -88,9 +86,8 @@ RSpec.describe "Hiits", type: :request do
       expect(response_body["hiit"]["finishedAt"]).to be_present
     end
 
-    it "returns today life info" do
-      life = Life.last
-      expect(response_body["todayLife"]).to be_present
+    it "returns status" do
+      expect(response_body["status"]).to eq Life.today.status
     end
 
     it "access-keyなしだとエラーになる" do

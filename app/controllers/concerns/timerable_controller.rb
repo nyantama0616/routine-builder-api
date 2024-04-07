@@ -10,7 +10,7 @@ module TimerableController
     if last && !last.timer.finished?
       begin
         last.start
-        render json: { model_name => last.info, timer: last.timer.info, todayLife: Life.today.info}
+        render json: { model_name => last.info, timer: last.timer.info, status: Life.today.status}
       rescue => exception
         render json: { errors: [exception.message] }, status: :bad_request
       end
@@ -20,7 +20,7 @@ module TimerableController
 
     begin
       model = model_class.create_and_start!(**start_params)
-      render json: { model_name => model.info, timer: model.timer.info, todayLife: Life.today.info }
+      render json: { model_name => model.info, timer: model.timer.info, status: Life.today.status }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
@@ -31,7 +31,7 @@ module TimerableController
 
     begin
       model.stop
-      render json: { model_name => model.info, timer: model.timer.info, todayLife: Life.today.info }
+      render json: { model_name => model.info, timer: model.timer.info, status: Life.today.status }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end
@@ -42,7 +42,7 @@ module TimerableController
 
     begin
       model.finish
-      render json: { model_name => model.info, timer: model.timer.info, todayLife: Life.today.info }
+      render json: { model_name => model.info, timer: model.timer.info, status: Life.today.status }
     rescue => exception
       render json: { errors: [exception.message] }, status: :bad_request
     end

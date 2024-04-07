@@ -1,7 +1,11 @@
 # Lifeクラスの寿命は、その日起きてから、次の日起きるまで！
 class Life < ApplicationRecord
   class << self
-    alias :today :last
+    def today
+      # TODO: なぜLife.lastではダメなのか
+      # てか、started_atカラムいらないよな
+      Life.order(:started_at).last
+    end
     
     def create_and_start
       life = create
@@ -65,11 +69,29 @@ class Life < ApplicationRecord
     end
   end
 
-  def info
+  def info(only: %i(wakedUpAt wentToBedAt sleepSeconds water trainSeconds))
+    res = {}
+    res[:status] = status if only.include?(:status)
+    res[:wakedUpAt] = started_at if only.include?(:wakedUpAt)
+    res[:wentToBedAt] = finished_at if only.include?(:wentToBedAt)
+    res[:sleepSeconds] = sleep_seconds if only.include?(:sleepSeconds)
+    res[:water] = water if only.include?(:water)
+    res[:trainSeconds] = train_seconds if only.include?(:trainSeconds)
+    res
+  end
+
+  def train_seconds
     {
-      startedAt: started_at,
-      status: status,
+      hiit: hiits.sum(&:passed_seconds),
+      hanon: hanons.sum(&:passed_seconds),
+      caterpillar: caterpillars.sum(&:passed_seconds),
     }
+  end
+
+  def sleep_seconds
+    sleep = sleeps.last
+    return 0 unless sleep && !sleep.nap?
+    sleep.passed_seconds
   end
 
   private

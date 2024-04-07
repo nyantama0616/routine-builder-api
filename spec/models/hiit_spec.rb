@@ -123,5 +123,12 @@ RSpec.describe Hiit, type: :model do
       @train.finish 5
       expect{ @train.finish 5 }.to raise_error(RuntimeError)
     end
+
+    it "passed_seconds()で経過時間が取得できる" do
+      Timecop.freeze(Time.current + 10.minutes) do
+        @train.finish 5
+        expect(@train.passed_seconds).to eq 10 * 60
+      end
+    end
   end
 end

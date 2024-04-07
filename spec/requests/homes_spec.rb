@@ -11,8 +11,8 @@ RSpec.describe "Homes", type: :request do
       expect(response).to have_http_status(200)
     end
 
-    it "returns todayLife" do
-      expect(response_body['todayLife']).to eq Life.today.info.as_json
+    it "returns status" do
+      expect(response_body['status']).to eq Life.today.status #TODO: status以外も返すかも
     end
   end
 end

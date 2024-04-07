@@ -5,8 +5,8 @@ RSpec.shared_examples "timerable request" do |type|
       expect(response_body["timer"]).to eq model.timer.info.as_json
     end
 
-    it "returns todayLife" do
-      expect(response_body["todayLife"]).to eq Life.today.info.as_json
+    it "returns status" do
+      expect(response_body["status"]).to eq Life.today.status
     end
   end
 end

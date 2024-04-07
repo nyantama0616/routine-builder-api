@@ -52,8 +52,8 @@ RSpec.describe "Sleeps", type: :request do
       expect(response_body["sleep"]["isNap"]).to eq(true)
     end
 
-    it "todayLifeが返ってくる" do
-      expect(response_body["todayLife"]).to eq(Life.today.info.as_json)
+    it "statusが返ってくる" do
+      expect(response_body["status"]).to eq(Life.today.status)
     end
 
     it "headerにdata-access-keyを含めないとエラーになる" do
@@ -84,8 +84,8 @@ RSpec.describe "Sleeps", type: :request do
       expect(response).to have_http_status(400)
     end
 
-    it "todayLifeが返ってくる" do
-      expect(response_body["todayLife"]).to eq(Life.today.info.as_json)
+    it "statusが返ってくる" do
+      expect(response_body["status"]).to eq(Life.today.status)
     end
 
     it "headerにdata-access-keyを含めないとエラーになる" do

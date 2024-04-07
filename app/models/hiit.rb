@@ -26,6 +26,12 @@ class Hiit < ApplicationRecord
     }
   end
 
+  # timerableのメソッド名と合わせた
+  def passed_seconds
+    return 0 unless finished?
+    (finished_at - started_at).to_i
+  end
+
   def finish(round_count)
     raise "already finished" if finished_at.present?
     update!(finished_at: Time.current, round_count: round_count)

@@ -22,7 +22,7 @@ class SleepsController < ApplicationController
       return
     end
 
-    render json: { sleep: sleep.info, todayLife: Life.today.info }
+    render json: { sleep: sleep.info, status: Life.today.status }
   end
   
   def finish
@@ -40,6 +40,6 @@ class SleepsController < ApplicationController
       return
     end
 
-    render json: { sleep: sleep.info, todayLife: Life.today.info }
+    render json: { sleep: sleep.info, status: Life.today.status }
   end
 end
