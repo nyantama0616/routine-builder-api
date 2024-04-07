@@ -65,11 +65,29 @@ class Life < ApplicationRecord
     end
   end
 
-  def info
+  def info(only: %i(wakeUpTime bedtime sleepSeconds water trainSeconds))
+    res = {}
+    res[:status] = status if only.include?(:status)
+    res[:wakeUpTime] = started_at if only.include?(:wakeUpTime)
+    res[:bedtime] = finished_at if only.include?(:bedtime)
+    res[:sleepSeconds] = sleep_seconds if only.include?(:sleepSeconds)
+    res[:water] = water if only.include?(:water)
+    res[:trainSeconds] = train_seconds if only.include?(:trainSeconds)
+    res
+  end
+
+  def train_seconds
     {
-      startedAt: started_at,
-      status: status,
+      hiit: hiits.sum(&:passed_seconds),
+      hanon: hanons.sum(&:passed_seconds),
+      caterpillar: caterpillars.sum(&:passed_seconds),
     }
+  end
+
+  def sleep_seconds
+    sleep = sleeps.last
+    return 0 unless sleep && !sleep.nap?
+    sleep.passed_seconds
   end
 
   private

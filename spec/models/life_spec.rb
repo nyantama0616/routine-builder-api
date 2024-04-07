@@ -139,8 +139,77 @@ RSpec.describe Life, type: :model do
 
     it "#info" do
       info = @life.info
-      expect(info[:startedAt]).to be_within(1.second).of(@life.started_at)
-      expect(info[:status]).to eq @life.status
+      expect(info[:wakeUpTime]).to be_within(1.second).of(@life.started_at)
+      expect(info[:beadtime]).to be_nil
+      expect(info[:sleepSeconds]).to eq 0
+      expect(info[:water]).to eq @life.water
+      expect(info[:trainSeconds]).to eq @life.train_seconds
+    end
+
+    it "train_seconds" do
+      hiit = Hiit.create_and_start!
+      hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
+      caterpillar = Caterpillar.create_and_start! pattern: "1234"
+      
+      Timecop.freeze(10.minute.from_now)
+      
+      hiit.finish 1
+      hanon.finish
+      caterpillar.finish
+
+      hiit = Hiit.create_and_start!
+      hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
+      caterpillar = Caterpillar.create_and_start! pattern: "1234"
+      
+      Timecop.freeze(20.minute.from_now)
+      
+      hiit.finish 1
+      hanon.finish
+      caterpillar.finish
+      
+      expect(@life.reload.train_seconds.values).to all(eq(30.minutes))
+    end
+  end
+
+  describe "associations" do
+    before do
+      @life = Life.create_and_start
+    end
+
+    it "has_many :sleeps" do
+      2.times do
+        sleep = Sleep.create_and_start nap: true
+        sleep.finish
+      end
+
+      expect(@life.sleeps.length).to eq 2
+    end
+
+    it "has_many :caterpillars" do
+      2.times do
+        caterpillar = Caterpillar.create_and_start! pattern: "1234"
+        caterpillar.finish
+      end
+
+      expect(@life.caterpillars.length).to eq 2
+    end
+
+    it "has_many :hiits" do
+      2.times do
+        hiit = Hiit.create_and_start! work_time: 30, break_time: 30
+        hiit.finish 1
+      end
+
+      expect(@life.hiits.length).to eq 2
+    end
+
+    it "has_many :hanons" do
+      2.times do
+        hanon = Hanon.create_and_start! num: 1, pattern: "1:CM"
+        hanon.finish
+      end
+
+      expect(@life.hanons.length).to eq 2
     end
   end
 end

@@ -44,4 +44,9 @@ class Sleep < ApplicationRecord
   def finished?
     finished_at.present?
   end
+
+  def passed_seconds
+    return 0 unless finished?
+    (finished_at - started_at).to_i
+  end
 end

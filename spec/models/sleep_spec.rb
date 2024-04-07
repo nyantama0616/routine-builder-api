@@ -94,4 +94,18 @@ RSpec.describe Sleep, type: :model do
       expect(Life.today.started_at).to be_within(1.second).of(Time.current)
     end
   end
+
+  describe "other methods" do
+    before do
+      Life.create_and_start
+      @sleep = Sleep.create_and_start
+    end
+
+    it "passed_secondsで経過時間が取得できる" do
+      Timecop.freeze(Time.current + 10.minutes) do
+        @sleep.finish
+        expect(@sleep.passed_seconds).to eq 10.minutes
+      end
+    end
+  end
 end
