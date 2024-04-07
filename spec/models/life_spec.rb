@@ -143,8 +143,8 @@ RSpec.describe Life, type: :model do
 
     it "#info" do
       info = @life.info
-      expect(info[:wakeUpTime]).to be_within(1.second).of(@life.started_at)
-      expect(info[:beadtime]).to be_nil
+      expect(info[:wakedUpAt]).to be_within(1.second).of(@life.started_at)
+      expect(info[:wentToBedAt]).to be_nil
       expect(info[:sleepSeconds]).to eq 0
       expect(info[:water]).to eq @life.water
       expect(info[:trainSeconds]).to eq @life.train_seconds
