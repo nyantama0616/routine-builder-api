@@ -19,6 +19,7 @@ class Life < ApplicationRecord
   has_many :hiits, dependent: :destroy
   has_many :hanons, dependent: :destroy
   has_many :tooths, dependent: :destroy
+  has_many :walks, dependent: :destroy
 
   def start
     raise 'already finished' if finished?

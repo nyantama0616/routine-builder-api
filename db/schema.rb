@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_06_074546) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_08_072326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_074546) do
     t.index ["life_id"], name: "index_tooths_on_life_id"
   end
 
+  create_table "walks", force: :cascade do |t|
+    t.bigint "life_id", null: false
+    t.string "from", null: false
+    t.string "to", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["life_id"], name: "index_walks_on_life_id"
+  end
+
   add_foreign_key "caterpillars", "lives"
   add_foreign_key "food_menu_items", "food_menus"
   add_foreign_key "food_menu_items", "foods"
@@ -110,4 +119,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_074546) do
   add_foreign_key "hiits", "lives"
   add_foreign_key "sleeps", "lives"
   add_foreign_key "tooths", "lives"
+  add_foreign_key "walks", "lives"
 end

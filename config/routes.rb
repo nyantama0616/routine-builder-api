@@ -50,4 +50,9 @@ Rails.application.routes.draw do
 
   #lifes
   get "/lifes/today", to: "lifes#today"
+
+  #walks
+  post "/walks/start", to: "walks#start"
+  post "/walks/stop", to: "walks#stop"
+  post "/walks/finish", to: "walks#finish"
 end

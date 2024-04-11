@@ -215,5 +215,23 @@ RSpec.describe Life, type: :model do
 
       expect(@life.hanons.length).to eq 2
     end
+
+    it "has_many :tooths" do
+      2.times do
+        tooth = Tooth.create_and_start!
+        tooth.finish
+      end
+
+      expect(@life.tooths.length).to eq 2
+    end
+
+    it "has_many :walks" do
+      2.times do
+        walk = Walk.create_and_start! from: "home", to: "fun"
+        walk.finish
+      end
+
+      expect(@life.walks.length).to eq 2
+    end
   end
 end
