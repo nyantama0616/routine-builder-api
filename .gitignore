@@ -10,7 +10,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-!/log/.keep
 !/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
@@ -34,3 +33,7 @@
 !/db/data/test/.keep
 
 .env*
+
+!/log/sends/
+/log/sends/*
+!/log/sends/.keep
