@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  get '/dev/ping', to: 'dev/pings#index'
+  get "/dev/ping", to: "dev/pings#index"
+  post "/dev/send", to: "dev/sends#create"
 
-  get '/home', to: 'homes#index'
+  get "/home", to: "homes#index"
   
   #sleeps
   get "/sleeps/latest", to: "sleeps#latest"
